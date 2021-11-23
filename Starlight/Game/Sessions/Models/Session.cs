@@ -50,12 +50,12 @@ namespace Starlight.Game.Sessions.Models
 
         public void Flush() => _ctx.Flush();
 
-        public async void Dispose()
+        public void Dispose()
         {
             _disconnected = true;
             Player = null;
             UniqueId = string.Empty;
-            await _ctx.DisconnectAsync();
+            _ctx.DisconnectAsync().Wait();
         }
     }
 }
