@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Core\**" />
+    <EmbeddedResource Remove="Core\**" />
+    <None Remove="Core\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="DotNetty.Buffers" Version="0.7.0" />
+    <PackageReference Include="DotNetty.Codecs.Http" Version="0.7.0" />
+    <PackageReference Include="DotNetty.Handlers" Version="0.7.0" />
+    <PackageReference Include="DotNetty.Transport" Version="0.7.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+    <PackageReference Include="MySql.Data" Version="8.0.27" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Starlight.API\Starlight.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Game\GameCenter\Packets\Incoming\Args\" />
+    <Folder Include="Game\Navigator\Packets\Incoming\Args\" />
+    <Folder Include="Game\Rooms\Components\" />
+  </ItemGroup>
+
+</Project>
