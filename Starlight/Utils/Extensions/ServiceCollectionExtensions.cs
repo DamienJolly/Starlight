@@ -24,14 +24,7 @@ namespace Starlight.Utils.Extensions
                 {
                     if (type.GetInterfaces().Contains(typeof(IService)))
                     {
-                        MethodInfo methodInfo = type.GetMethod("RegisterServices");
-                        if (methodInfo == null)
-                            continue;
-
-                        object classInstance = Activator.CreateInstance(type, null);
-                        object[] parametersArray = new object[] { serviceCollection };
-
-                        type.GetMethod("RegisterServices").Invoke(classInstance, parametersArray);
+                        ((IService)Activator.CreateInstance(type, null)).RegisterServices(serviceCollection);
                     }
                 }
             }

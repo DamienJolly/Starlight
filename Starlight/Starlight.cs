@@ -20,13 +20,13 @@ namespace Starlight
             _networkHandler = _serviceProvider.GetService<INetworkHandler>();
         }
 
-        public async Task RunAsync()
+        public async Task Run()
         {
             await _networkHandler.StartServerAsync("Game Server");
             await _networkHandler.StartServerAsync("RCON Server");
         }
 
-        public async Task StopAsync()
+        public async Task Stop()
         {
             await _networkHandler.ServerShutdown();
 

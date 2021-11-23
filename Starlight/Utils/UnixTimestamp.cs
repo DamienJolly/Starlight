@@ -4,11 +4,11 @@ namespace Starlight.Utils
 {
     internal static class UnixTimestamp
     {
-		internal static DateTime FromUnixTimestamp(double timestamp) => 
-            new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timestamp);
+		internal static DateTime FromUnixTimestamp(double timestamp) =>
+            DateTime.UnixEpoch.AddSeconds(timestamp);
 
-		internal static double Now => 
-            (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
+        internal static long Now =>
+            DateTimeOffset.Now.ToUnixTimeSeconds();
 
         internal static bool IsToday(double timestamp) =>
             IsToday(FromUnixTimestamp(timestamp));
@@ -20,6 +20,6 @@ namespace Starlight.Utils
             IsYesterday(FromUnixTimestamp(timestamp));
 
         internal static bool IsYesterday(DateTime time) =>
-            DateTime.Today - time.Date == TimeSpan.FromDays(1);
+            DateTime.Today - TimeSpan.FromDays(1) == time.Date;
     }
 }

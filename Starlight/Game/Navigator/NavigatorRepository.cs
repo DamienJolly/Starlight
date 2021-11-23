@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Starlight.API.Game.Navigator.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Starlight.Game.Navigator
 {
@@ -23,10 +24,10 @@ namespace Starlight.Game.Navigator
 
             _categories = new Dictionary<string, INavigatorCategory>();
 
-            InitializeNavigator();
+            InitializeNavigator().Wait();
         }
 
-        internal async void InitializeNavigator()
+        internal async Task InitializeNavigator()
         {
             _categories.Clear();
 

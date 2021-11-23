@@ -18,10 +18,10 @@ namespace Starlight.Game.Rooms
             _rooms = new Dictionary<uint, IRoom>();
             _roomModels = new Dictionary<string, IRoomModel>();
 
-            LoadRoomModels();
+            LoadRoomModels().Wait();
         }
 
-        public async void LoadRoomModels()
+        public async Task LoadRoomModels()
         {
             IList<IRoomModel> roomModels = await _roomDao.GetRoomModels();
             foreach (IRoomModel roomModel in roomModels)

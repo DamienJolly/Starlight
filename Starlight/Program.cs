@@ -17,18 +17,18 @@ namespace Starlight
             ConsoleUtil.ClearConsole();
 
             _server = new Starlight();
-            await _server.RunAsync();
+            await _server.Run();
 
-            await ReadLoopAsync();
+            await ReadLoop();
         }
 
-        private async Task ReadLoopAsync()
+        private async Task ReadLoop()
         {
             while (true)
             {
                 if (Console.ReadKey(false).Key == ConsoleKey.Enter)
                 {
-                    await _server.StopAsync();
+                    await _server.Stop();
                 }
             }
         }
