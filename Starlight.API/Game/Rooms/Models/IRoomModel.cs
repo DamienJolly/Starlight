@@ -1,4 +1,6 @@
-﻿namespace Starlight.API.Game.Rooms.Models
+﻿using Starlight.API.Game.Rooms.Types;
+
+namespace Starlight.API.Game.Rooms.Models
 {
 	public interface IRoomModel
 	{
@@ -12,9 +14,9 @@
 		int MapSizeX { get; set; }
 		int MapSizeY { get; set; }
 		double DoorZ { get; set; }
+		TileState[,] TileStates { get; set; }
+		double[,] TileHeights { get; set; }
 
-		double GetHeight(int x, int y);
-		bool GetTileState(int x, int y);
 		void InitializeHeightMap();
 	}
 }

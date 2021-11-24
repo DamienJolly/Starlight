@@ -18,6 +18,14 @@ namespace Starlight.Game.Rooms.Packets.Incoming
 
             await session.WriteAndFlushAsync(new HeightMapComposer(room.RoomModel));
             await session.WriteAndFlushAsync(new FloorHeightMapComposer(-1, room.RoomModel.RelativeHeightMap));
+
+            room.AddPlayerEntity(session);
+
+            await session.WriteAndFlushAsync(new RoomEntryInfoComposer(room.RoomData.Id, true));
+            await session.WriteAndFlushAsync(new EntitiesComposer(room.Entity.Entities));
+            await session.WriteAndFlushAsync(new EntitiesUpdateComposer(room.Entity.Entities));
+
+            await session.WriteAndFlushAsync(new RoomVisualizationSettingsComposer(false, 0, 0));
         }
     }
 }

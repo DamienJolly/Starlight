@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30330.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starlight", "Starlight\Starlight.csproj", "{6DB23B32-B610-4314-8864-B7782DD8E8CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starlight", "Starlight\Starlight.csproj", "{6DB23B32-B610-4314-8864-B7782DD8E8CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starlight.API", "Starlight.API\Starlight.API.csproj", "{D6E1F31B-7C8D-45F2-A62F-3380D26A4B72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starlight.API", "Starlight.API\Starlight.API.csproj", "{D6E1F31B-7C8D-45F2-A62F-3380D26A4B72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starlight.Pathfinding", "Starlight.Pathfinding\Starlight.Pathfinding.csproj", "{9C0F2A5B-0989-4DA7-8534-80187CA5EAA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D6E1F31B-7C8D-45F2-A62F-3380D26A4B72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6E1F31B-7C8D-45F2-A62F-3380D26A4B72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6E1F31B-7C8D-45F2-A62F-3380D26A4B72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C0F2A5B-0989-4DA7-8534-80187CA5EAA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C0F2A5B-0989-4DA7-8534-80187CA5EAA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C0F2A5B-0989-4DA7-8534-80187CA5EAA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C0F2A5B-0989-4DA7-8534-80187CA5EAA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

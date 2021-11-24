@@ -28,16 +28,11 @@ namespace Starlight.Game.Rooms.Packets.Incoming
                 return;
             }
 
-            await session.WriteAndFlushAsync(new RoomOpenComposer());
-
-            //Todo: rights
-
             session.CurrentRoom = room;
 
+            await session.WriteAndFlushAsync(new RoomOpenComposer());
             await session.WriteAndFlushAsync(new RoomModelComposer(room.RoomData));
             //await session.WriteAndFlushAsync(new RoomScoreComposer(room.Score));
-
-            //Todo: paint room
         }
     }
 }

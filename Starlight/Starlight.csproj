@@ -33,7 +33,6 @@
   <ItemGroup>
     <Folder Include="Game\GameCenter\Packets\Incoming\Args\" />
     <Folder Include="Game\Navigator\Packets\Incoming\Args\" />
-    <Folder Include="Game\Rooms\Components\" />
   </ItemGroup>
 
 </Project>

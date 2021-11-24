@@ -2,6 +2,7 @@
 using Starlight.API.Communication.Messages;
 using Starlight.API.Communication.Messages.Protocols;
 using Starlight.API.Game.Players.Models;
+using Starlight.API.Game.Rooms.Entities;
 using Starlight.API.Game.Rooms.Models;
 using Starlight.API.Game.Session.Models;
 using Starlight.Communication.Messages.Protocols;
@@ -20,6 +21,8 @@ namespace Starlight.Game.Sessions.Models
         }
 
         public IRoom CurrentRoom { get; set; }
+
+        public IRoomEntity Entity { get; set; }
 
         public IPlayer Player { get; set; }
 

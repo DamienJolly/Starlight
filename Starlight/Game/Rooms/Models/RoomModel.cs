@@ -1,6 +1,6 @@
 ﻿using Starlight.API.Game.Rooms.Models;
+using Starlight.API.Game.Rooms.Types;
 using Starlight.Game.Rooms.Utils;
-using System;
 using System.Text;
 
 namespace Starlight.Game.Rooms.Models
@@ -17,15 +17,8 @@ namespace Starlight.Game.Rooms.Models
         public int MapSizeX { get; set; }
         public int MapSizeY { get; set; }
         public double DoorZ { get; set; }
-
-        private double[,] _floorHeightMap;
-        private bool[,] _tileStateMap;
-
-        public double GetHeight(int x, int y) =>
-            _floorHeightMap[x, y];
-
-        public bool GetTileState(int x, int y) =>
-            _tileStateMap[x, y];
+        public TileState[,] TileStates { get; set; }
+        public double[,] TileHeights { get; set; }
 
         private RoomModel()
         {
@@ -40,40 +33,36 @@ namespace Starlight.Game.Rooms.Models
 
         private void ParseHeightMap()
         {
-            string[] splitHeightMap = HeightMap.Split('\r');
+            string[] splitHeightMap = HeightMap.Replace("\n", "").Split('\r');
+
             MapSizeX = splitHeightMap[0].Length;
             MapSizeY = splitHeightMap.Length;
-            _floorHeightMap = new double[MapSizeX, MapSizeY];
-            _tileStateMap = new bool[MapSizeX, MapSizeY];
+
+            TileStates = new TileState[MapSizeX, MapSizeY];
+            TileHeights = new double[MapSizeX, MapSizeY];
 
             for (int y = 0; y < MapSizeY; y++)
             {
-                char[] line = splitHeightMap[y].Replace("\r", "").Replace("\n", "").ToCharArray();
+                char[] line = splitHeightMap[y].ToCharArray();
 
-                int x = 0;
-                foreach (char square in line)
+                for (int x = 0; x < MapSizeX; x++)
                 {
-                    if (x > MapSizeX)
-                    {
-                        throw new FormatException($"Invalid room model! Model Id: {Id}");
-                    }
+                    char square = line[x];
 
-                    if (square == 'x')
+                    if (square != 'x')
                     {
-                        //Square is blocked!
-                        _tileStateMap[x, y] = false;
+                        TileStates[x, y] = TileState.OPEN;
+                        TileHeights[x, y] = square.Parse();
                     }
                     else
                     {
-                        _tileStateMap[x, y] = true;
-                        _floorHeightMap[x, y] = square.Parse();
+                        TileStates[x, y] = TileState.CLOSED;
+                        TileHeights[x, y] = 0;
                     }
-
-                    x++;
                 }
             }
 
-            DoorZ = _floorHeightMap[DoorX, DoorY];
+            DoorZ = TileHeights[DoorX, DoorY];
         }
 
         private void ParseRelativeMap()
@@ -89,10 +78,10 @@ namespace Starlight.Game.Rooms.Models
                         continue;
                     }
 
-                    if (_tileStateMap[x, y])
+                    if (TileStates[x, y] == TileState.OPEN)
                     {
-                        double Height = _floorHeightMap[x, y];
-                        string Val = Height > 9 ? ((char)(87 + Height)).ToString() : Height.ToString();
+                        double Height = TileHeights[x, y];
+						string Val = Height > 9 ? ((char)(87 + Height)).ToString() : Height.ToString();
                         relativeMap.Append(Val);
                     }
                     else

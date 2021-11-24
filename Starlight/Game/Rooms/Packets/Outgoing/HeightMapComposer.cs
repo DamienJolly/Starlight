@@ -1,6 +1,7 @@
 ﻿using Starlight.API.Communication.Messages;
 using Starlight.API.Communication.Messages.Protocols;
 using Starlight.API.Game.Rooms.Models;
+using Starlight.API.Game.Rooms.Types;
 
 namespace Starlight.Game.Rooms.Packets.Outgoing
 {
@@ -22,9 +23,9 @@ namespace Starlight.Game.Rooms.Packets.Outgoing
             {
                 for (int x = 0; x < RoomModel.MapSizeX; x++)
                 {
-                    if (RoomModel.GetTileState(x, y))
+                    if (RoomModel.TileStates[x, y] == TileState.OPEN)
                     {
-                        message.WriteShort((short)(RoomModel.GetHeight(x, y) * 256));
+                        message.WriteShort((short)(RoomModel.TileHeights[x, y] * 256));
                     }
                     else
                     {

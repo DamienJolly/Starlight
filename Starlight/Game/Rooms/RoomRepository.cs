@@ -1,4 +1,7 @@
-﻿using Starlight.API.Game.Rooms.Models;
+﻿using Starlight.API.Game.Rooms.Entities;
+using Starlight.API.Game.Rooms.Models;
+using Starlight.API.Game.Session.Models;
+using Starlight.Game.Rooms.Entities;
 using Starlight.Game.Rooms.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
