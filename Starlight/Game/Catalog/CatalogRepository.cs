@@ -30,14 +30,20 @@ namespace Starlight.Game.Catalog
 
 		public IDictionary<int, ICatalogPage> GetCatalogPages(string mode)
 		{
-			switch (mode)
+			return mode switch
 			{
-				case "BUILDERS_CLUB":
-					return _catalogBCPages;
-				case "NORMAL":
-				default:
-					return _catalogPages;
-			}
+				"BUILDERS_CLUB" => _catalogBCPages,
+				_ => _catalogPages,
+			};
+		}
+
+		public bool TryGetCatalogPage(int pageId, string mode, out ICatalogPage page)
+		{
+			return mode switch
+			{
+				"BUILDERS_CLUB" => _catalogBCPages.TryGetValue(pageId, out page),
+				_ => _catalogPages.TryGetValue(pageId, out page),
+			};
 		}
 	}
 }
