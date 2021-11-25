@@ -10,7 +10,7 @@ namespace Starlight.Game.HotelView.Packets.Incoming
     {
         public override short Header => Headers.HotelViewDataEvent;
 
-        protected override async Task HandleAsync(ISession session, WidgetDataArgs args)
+        protected override async ValueTask Execute(ISession session, WidgetDataArgs args)
         {
             string text = args.Text;
             string name = string.Empty;

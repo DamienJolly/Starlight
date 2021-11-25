@@ -19,7 +19,7 @@ namespace Starlight.Game.HotelView.Packets.Incoming
             _hotelViewController = hotelViewController;
         }
 
-        protected override async Task HandleAsync(ISession session)
+        protected override async ValueTask Execute(ISession session)
         {
             IList<IArticle> articles = await _hotelViewController.GetNewsArticlesAsync();
 

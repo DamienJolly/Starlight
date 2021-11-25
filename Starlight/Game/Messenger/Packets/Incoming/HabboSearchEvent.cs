@@ -21,7 +21,7 @@ namespace Starlight.Game.Messenger.Packets.Incoming
             _messengerController = messengerController;
         }
 
-        protected override async Task HandleAsync(ISession session, SearchArgs args)
+        protected override async ValueTask Execute(ISession session, SearchArgs args)
         {
             string username = args.Username;
 

@@ -10,7 +10,7 @@ namespace Starlight.Game.Handshake.Packets.Incoming
     {
 		public override short Header => Headers.UniqueIdEvent;
 
-        protected override async Task HandleAsync(ISession session, UniqueIdArgs args)
+        protected override async ValueTask Execute(ISession session, UniqueIdArgs args)
         {
             session.UniqueId = args.UniqueId;
 

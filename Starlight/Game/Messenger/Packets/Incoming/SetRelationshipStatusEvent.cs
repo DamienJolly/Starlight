@@ -19,7 +19,7 @@ namespace Starlight.Game.Messenger.Packets.Incoming
             _messengerController = messengerController;
         }
 
-        protected override async Task HandleAsync(ISession session, RelationshipArgs args)
+        protected override async ValueTask Execute(ISession session, RelationshipArgs args)
         {
             IMessengerFriend friend = session.Player.MessengerComponent.GetFriend(args.TargetId);
             if (friend == null)

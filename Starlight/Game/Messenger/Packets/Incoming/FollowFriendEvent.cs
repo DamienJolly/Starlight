@@ -19,7 +19,7 @@ namespace Starlight.Game.Messenger.Packets.Incoming
             _playerController = playerController;
         }
 
-        protected override async Task HandleAsync(ISession session, FollowFriendArgs args)
+        protected override async ValueTask Execute(ISession session, FollowFriendArgs args)
         {
 			//Todo: hiding offline
 			if (!_playerController.TryGetPlayer(args.TargetId, out _))

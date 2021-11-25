@@ -9,10 +9,10 @@ namespace Starlight.Game.Handshake.Packets.Incoming
     {
         public override short Header => Headers.CheckVariablesEvent;
 
-        protected override Task HandleAsync(ISession session, VariablesArgs args)
+        protected override ValueTask Execute(ISession session, VariablesArgs args)
         {
             // Do something?
-            return Task.CompletedTask;
+            return default;
         }
     }
 }

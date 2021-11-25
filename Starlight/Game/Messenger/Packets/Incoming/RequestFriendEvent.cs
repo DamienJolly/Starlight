@@ -24,7 +24,7 @@ namespace Starlight.Game.Messenger.Packets.Incoming
             _playerController = playerController;
         }
 
-        protected override async Task HandleAsync(ISession session, FriendRequestArgs args)
+        protected override async ValueTask Execute(ISession session, FriendRequestArgs args)
         {
             uint targetId = await _playerController.GetPlayerIdByUsernameAsync(args.Username);
 

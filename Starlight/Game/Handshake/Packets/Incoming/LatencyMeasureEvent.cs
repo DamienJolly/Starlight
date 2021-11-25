@@ -8,10 +8,10 @@ namespace Starlight.Game.Handshake.Packets.Incoming
     {
 		public override short Header => Headers.LatencyMeasureEvent;
 
-        protected override Task HandleAsync(ISession session)
+        protected override ValueTask Execute(ISession session)
         {
             // Todo: Whatever this is used for..
-            return Task.CompletedTask;
+            return default;
         }
     }
 }

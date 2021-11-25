@@ -9,7 +9,7 @@ namespace Starlight.Game.Players.Packets.Incoming
     {
 		public override short Header => Headers.RequestPlayerDataEvent;
 
-        protected override async Task HandleAsync(ISession session)
+        protected override async ValueTask Execute(ISession session)
         {
             await session.WriteAndFlushAsync(new UserDataComposer(session.Player));
             await session.WriteAndFlushAsync(new UserPerksComposer(session.Player));

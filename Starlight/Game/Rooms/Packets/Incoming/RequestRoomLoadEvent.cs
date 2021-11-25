@@ -19,7 +19,7 @@ namespace Starlight.Game.Rooms.Packets.Incoming
             _roomController = roomController;
         }
 
-        protected override async Task HandleAsync(ISession session, RoomLoadArgs args)
+        protected override async ValueTask Execute(ISession session, RoomLoadArgs args)
         {
             IRoom room = await _roomController.LoadRoomByIdAsync(args.RoomId);
             if (room == null)

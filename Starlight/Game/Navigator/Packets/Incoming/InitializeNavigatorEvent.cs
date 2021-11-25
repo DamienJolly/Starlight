@@ -9,7 +9,7 @@ namespace Starlight.Game.Navigator.Packets.Incoming
     {
         public override short Header => Headers.InitializeNavigatorEvent;
 
-        protected override async Task HandleAsync(ISession session)
+        protected override async ValueTask Execute(ISession session)
         {
             await session.WriteAndFlushAsync(new NavigatorMetaDataComposer());
             await session.WriteAndFlushAsync(new NavigatorLiftedRoomsComposer());

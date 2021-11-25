@@ -12,7 +12,7 @@ namespace Starlight.Game.Messenger.Packets.Incoming
     {
 		public override short Header => Headers.FriendListUpdateEvent;
 
-        protected override async Task HandleAsync(ISession session)
+        protected override async ValueTask Execute(ISession session)
         {
             IList<IMessengerCategory> categories = session.Player.MessengerComponent.Categories;
             IList<IMessengerUpdate> updates = session.Player.MessengerComponent.UpdateQueue.Dequeue();

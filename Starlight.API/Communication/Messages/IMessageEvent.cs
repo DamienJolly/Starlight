@@ -17,6 +17,6 @@ namespace Starlight.API.Communication.Messages
         /// <param name="session">The session.</param>
         /// <param name="message">The packet that comes with the message.</param>
         /// <returns>The event handled upon task completion.</returns>
-        Task HandleAsync(ISession session, IClientMessage message);
+        ValueTask Execute(ISession session, IClientMessage message);
     }
 }

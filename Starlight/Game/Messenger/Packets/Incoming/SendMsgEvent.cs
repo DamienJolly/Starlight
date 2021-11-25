@@ -25,7 +25,7 @@ namespace Starlight.Game.Messenger.Packets.Incoming
             _playerController = playerController;
         }
 
-        protected override async Task HandleAsync(ISession session, PrivateMessageArgs args)
+        protected override async ValueTask Execute(ISession session, PrivateMessageArgs args)
         {
             string message = args.Message;
 

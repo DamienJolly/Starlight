@@ -9,9 +9,9 @@ namespace Starlight.Game.Handshake.Packets.Incoming
     {
 		public override short Header => Headers.CheckReleaseEvent;
 
-        protected override Task HandleAsync(ISession session, ReleaseArgs args)
+        protected override ValueTask Execute(ISession session, ReleaseArgs args)
         {
-            return Task.CompletedTask;
+            return default;
         }
     }
 }

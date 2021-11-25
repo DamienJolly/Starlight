@@ -20,7 +20,7 @@ namespace Starlight.Game.Players.Packets.Incoming
             _playerController = playerController;
         }
 
-        protected override async Task HandleAsync(ISession session, LoginArgs args)
+        protected override async ValueTask Execute(ISession session, LoginArgs args)
         {
             IPlayerData playerData = await _playerController.GetPlayerDataBySsoAsync(args.AuthTicket);
             if (playerData == null)

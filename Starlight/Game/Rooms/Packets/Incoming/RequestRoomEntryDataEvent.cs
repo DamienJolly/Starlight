@@ -10,7 +10,7 @@ namespace Starlight.Game.Rooms.Packets.Incoming
     {
         public override short Header => Headers.RequestRoomEntryDataEvent;
 
-        protected override async Task HandleAsync(ISession session)
+        protected override async ValueTask Execute(ISession session)
         {
             IRoom room = session.CurrentRoom;
             if (room == null)

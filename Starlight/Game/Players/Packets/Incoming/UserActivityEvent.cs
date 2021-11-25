@@ -9,10 +9,10 @@ namespace Starlight.Game.Players.Packets.Incoming
     {
 		public override short Header => Headers.UserActivityEvent;
 
-        protected override Task HandleAsync(ISession session, ActivityArgs args)
+        protected override ValueTask Execute(ISession session, ActivityArgs args)
         {
             //TODO: Progress achievements of something?
-            return Task.CompletedTask;
+            return default;
         }
     }
 }

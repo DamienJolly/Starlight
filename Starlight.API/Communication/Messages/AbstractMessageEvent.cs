@@ -9,14 +9,14 @@ namespace Starlight.API.Communication.Messages
     {
         public abstract short Header { get; }
 
-        protected abstract Task HandleAsync(ISession session, TArgs args);
+        protected abstract ValueTask Execute(ISession session, TArgs args);
 
-        public Task HandleAsync(ISession session, IClientMessage message)
+        public ValueTask Execute(ISession session, IClientMessage message)
         {
             TArgs args = new TArgs();
             args.Parse(message);
 
-            return HandleAsync(session, args);
+            return Execute(session, args);
         }
     }
 
@@ -24,11 +24,11 @@ namespace Starlight.API.Communication.Messages
     {
         public abstract short Header { get; }
 
-        protected abstract Task HandleAsync(ISession session);
+        protected abstract ValueTask Execute(ISession session);
 
-        public Task HandleAsync(ISession session, IClientMessage message)
+        public ValueTask Execute(ISession session, IClientMessage message)
         {
-            return HandleAsync(session);
+            return Execute(session);
         }
     }
 }

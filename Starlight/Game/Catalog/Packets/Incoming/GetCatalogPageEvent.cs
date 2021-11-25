@@ -20,7 +20,7 @@ namespace Starlight.Game.Catalog.Packets.Incoming
             _catalogController = catalogController;
         }
 
-        protected override async Task HandleAsync(ISession session, CatalogPageArgs args)
+        protected override async ValueTask Execute(ISession session, CatalogPageArgs args)
         {
             if (!_catalogController.TryGetCatalogPage(args.PageId, args.Mode, out ICatalogPage catalogPage))
                 return;

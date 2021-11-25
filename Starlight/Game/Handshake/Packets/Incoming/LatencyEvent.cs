@@ -10,7 +10,7 @@ namespace Starlight.Game.Handshake.Packets.Incoming
     {
 		public override short Header => Headers.LatencyEvent;
 
-        protected override async Task HandleAsync(ISession session, LatencyArgs args)
+        protected override async ValueTask Execute(ISession session, LatencyArgs args)
         {
             await session.WriteAndFlushAsync(new LatencyComposer(args.Id));
         }

@@ -19,7 +19,7 @@ namespace Starlight.Game.Messenger.Packets.Incoming
             _playerController = playerController;
         }
 
-        protected override async Task HandleAsync(ISession session, RoomInviteArgs args)
+        protected override async ValueTask Execute(ISession session, RoomInviteArgs args)
         {
             //Todo: player is muted
 

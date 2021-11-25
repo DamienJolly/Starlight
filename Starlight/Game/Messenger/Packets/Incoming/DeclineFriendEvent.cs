@@ -17,7 +17,7 @@ namespace Starlight.Game.Messenger.Packets.Incoming
             _messengerController = messengerController;
         }
 
-        protected override async Task HandleAsync(ISession session, DeclineArgs args)
+        protected override async ValueTask Execute(ISession session, DeclineArgs args)
         {
             if (args.DeclineAll)
             {

@@ -23,7 +23,7 @@ namespace Starlight.Game.Messenger.Packets.Incoming
             _playerController = playerController;
         }
 
-        protected override async Task HandleAsync(ISession session, RemoveArgs args)
+        protected override async ValueTask Execute(ISession session, RemoveArgs args)
         {
             foreach (uint targetId in args.TargetIds)
             {

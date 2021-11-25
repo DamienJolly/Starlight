@@ -9,7 +9,7 @@ namespace Starlight.Game.Players.Packets.Incoming
     {
 		public override short Header => Headers.RequestPlayerCurrenciesEvent;
 
-        protected override async Task HandleAsync(ISession session)
+        protected override async ValueTask Execute(ISession session)
         {
             await session.WriteAndFlushAsync(new PlayerCreditsComposer(session.Player.PlayerData.Credits));
             await session.WriteAndFlushAsync(new PlayerPointsComposer());

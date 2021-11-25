@@ -9,7 +9,7 @@ namespace Starlight.Game.Rooms.Packets.Incoming
     {
         public override short Header => Headers.RequestFurnitureAliasesEvent;
 
-        protected override async Task HandleAsync(ISession session)
+        protected override async ValueTask Execute(ISession session)
         {
             await session.WriteAndFlushAsync(new FurnitureAliasesComposer());
         }

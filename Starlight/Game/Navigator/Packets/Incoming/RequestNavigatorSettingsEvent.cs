@@ -19,7 +19,7 @@ namespace Starlight.Game.Navigator.Packets.Incoming
             _navigatorController = navigatorController;
         }
 
-        protected override async Task HandleAsync(ISession session)
+        protected override async ValueTask Execute(ISession session)
         {
             IList<INavigatorCategory> categories = _navigatorController.TryGetCategoryByView("roomads_view");
 

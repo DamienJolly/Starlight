@@ -20,7 +20,7 @@ namespace Starlight.Game.HotelView.Packets.Incoming
             _hotelViewController = hotelViewController;
         }
 
-        protected override async Task HandleAsync(ISession session, WidgetDataArgs args)
+        protected override async ValueTask Execute(ISession session, WidgetDataArgs args)
         {
             string text = args.Text;
             IList<IHallOfFamer> hallOfFamers = await _hotelViewController.GetHallOfFamersAsync();

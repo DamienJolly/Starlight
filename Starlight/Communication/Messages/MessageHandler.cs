@@ -29,7 +29,7 @@ namespace Starlight.Communication.Messages
                 if (_messageEvents.TryGetValue(message.Header, out IMessageEvent messageEvent))
                 {
                     _logger.LogInformation("Executing {0} for header {1}", messageEvent.GetType().Name, message.Header);
-                    await messageEvent.HandleAsync(session, message);
+                    await messageEvent.Execute(session, message);
                 }
                 else
                 {

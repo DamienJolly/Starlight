@@ -9,11 +9,11 @@ namespace Starlight.Game.Rooms.Packets.Incoming.Entities
     {
         public override short Header => Headers.MoveAvatarEvent;
 
-        protected override Task HandleAsync(ISession session, EntityMoveArgs args)
+        protected override ValueTask Execute(ISession session, EntityMoveArgs args)
         {
             session.Entity.Move(args.PositionX, args.PositionY);
 
-            return Task.CompletedTask;
+            return default;
         }
     }
 }
