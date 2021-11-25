@@ -24,5 +24,13 @@ namespace Starlight.Game.Catalog
 				"SELECT * FROM `catalog_pages` ORDER BY `order_num` ASC, `caption` ASC"))
 				.ToDictionary(row => row.Id, row => row);
 		}
+
+		internal async Task<IDictionary<int, ICatalogPage>> GetCatalogBCPages()
+		{
+			using var connection = dbProvider.GetSqlConnection();
+			return new List<ICatalogPage>(await connection.QueryAsync<CatalogPage>(
+				"SELECT * FROM `catalog_bc_pages` ORDER BY `order_num` ASC, `caption` ASC"))
+				.ToDictionary(row => row.Id, row => row);
+		}
 	}
 }

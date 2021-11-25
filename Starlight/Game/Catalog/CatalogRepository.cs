@@ -11,6 +11,7 @@ namespace Starlight.Game.Catalog
         private readonly CatalogDao _catalogDao;
 
         private IDictionary<int, ICatalogPage> _catalogPages;
+        private IDictionary<int, ICatalogPage> _catalogBCPages;
 
         public CatalogRepository(ILogger<CatalogRepository> logger, CatalogDao catalogDao)
         {
@@ -24,6 +25,7 @@ namespace Starlight.Game.Catalog
 		public async Task InitializeCatalog()
 		{
 			_catalogPages = await _catalogDao.GetCatalogPages();
+			_catalogBCPages = await _catalogDao.GetCatalogBCPages();
 		}
 
 		public IDictionary<int, ICatalogPage> GetCatalogPages(string mode)
@@ -31,8 +33,7 @@ namespace Starlight.Game.Catalog
 			switch (mode)
 			{
 				case "BUILDERS_CLUB":
-					//Todo: builders club pages
-					return new Dictionary<int, ICatalogPage>();
+					return _catalogBCPages;
 				case "NORMAL":
 				default:
 					return _catalogPages;
