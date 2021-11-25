@@ -1,4 +1,5 @@
-﻿
+﻿using Starlight.API.Game.Catalog.Layouts;
+
 namespace Starlight.API.Game.Catalog.Models
 {
     public interface ICatalogPage
@@ -19,5 +20,7 @@ namespace Starlight.API.Game.Catalog.Models
         string Layout { get; }
         bool Enabled { get; }
         bool Visible { get; }
+
+        CatalogLayout PageLayout { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Starlight.API.Game.Catalog.Models;
+﻿using Starlight.API.Game.Catalog.Layouts;
+using Starlight.API.Game.Catalog.Models;
 
 namespace Starlight.Game.Catalog.Models
 {
@@ -20,5 +21,7 @@ namespace Starlight.Game.Catalog.Models
         public string Layout { get; }
         public bool Enabled { get; }
         public bool Visible { get; }
+
+        public CatalogLayout PageLayout { get; set; }
     }
 }

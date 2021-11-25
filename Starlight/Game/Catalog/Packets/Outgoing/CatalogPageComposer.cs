@@ -20,25 +20,7 @@ namespace Starlight.Game.Catalog.Packets.Outgoing
             message.WriteInt(CatalogPage.Id);
             message.WriteString(Mode);
 
-            // Layouts
-            /* message.WriteString("default_3x3");
-             message.WriteInt(3);
-             message.WriteString(CatalogPage.HeaderImage);
-             message.WriteString(CatalogPage.TeaserImage);
-             message.WriteString(CatalogPage.SpecialImage);
-             message.WriteInt(3);
-             message.WriteString(CatalogPage.TextOne);
-             message.WriteString(CatalogPage.TextDetails);
-             message.WriteString(CatalogPage.TextTeaser);*/
-
-            message.WriteString("frontpage4");
-            message.WriteInt(2);
-            message.WriteString(CatalogPage.HeaderImage);
-            message.WriteString(CatalogPage.TeaserImage);
-            message.WriteInt(3);
-            message.WriteString(CatalogPage.TextOne);
-            message.WriteString(CatalogPage.TextTwo);
-            message.WriteString(CatalogPage.TextTeaser);
+            CatalogPage.PageLayout.ComposePageData(message);
 
             message.WriteInt(0); // Catalog items count
 
