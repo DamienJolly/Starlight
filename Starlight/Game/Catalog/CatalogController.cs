@@ -18,5 +18,8 @@ namespace Starlight.Game.Catalog
 
         public bool TryGetCatalogPage(int pageId, string mode, out ICatalogPage page) =>
             _catalogRepository.TryGetCatalogPage(pageId, mode, out page);
+
+        public IList<ICatalogFeaturedPage> GetFeaturedPages() =>
+            _catalogRepository.GetFeaturedPages();
     }
 }

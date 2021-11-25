@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Starlight.API.Game.Catalog.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Starlight.Game.Catalog
@@ -12,8 +13,9 @@ namespace Starlight.Game.Catalog
 
         private IDictionary<int, ICatalogPage> _catalogPages;
         private IDictionary<int, ICatalogPage> _catalogBCPages;
+		private IDictionary<int, ICatalogFeaturedPage> _featuredPages;
 
-        public CatalogRepository(ILogger<CatalogRepository> logger, CatalogDao catalogDao)
+		public CatalogRepository(ILogger<CatalogRepository> logger, CatalogDao catalogDao)
         {
 			_logger = logger;
 			_catalogDao = catalogDao;
@@ -26,6 +28,7 @@ namespace Starlight.Game.Catalog
 		{
 			_catalogPages = await _catalogDao.GetCatalogPages();
 			_catalogBCPages = await _catalogDao.GetCatalogBCPages();
+			_featuredPages = await _catalogDao.GetCatalogFeaturedPages();
 		}
 
 		public IDictionary<int, ICatalogPage> GetCatalogPages(string mode)
@@ -45,5 +48,8 @@ namespace Starlight.Game.Catalog
 				_ => _catalogPages.TryGetValue(pageId, out page),
 			};
 		}
+
+		public IList<ICatalogFeaturedPage> GetFeaturedPages() =>
+			_featuredPages.Values.ToList();
 	}
 }

@@ -4,6 +4,7 @@ using Starlight.API.Game.Catalog.Models;
 using Starlight.API.Game.Session.Models;
 using Starlight.Game.Catalog.Packets.Incoming.Args;
 using Starlight.Game.Catalog.Packets.Outgoing;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Starlight.Game.Catalog.Packets.Incoming
@@ -27,7 +28,9 @@ namespace Starlight.Game.Catalog.Packets.Incoming
             if (catalogPage.Rank > session.Player.PlayerData.Rank || !catalogPage.Enabled)
                 return;
 
-            await session.WriteAndFlushAsync(new CatalogPageComposer(args.Mode, catalogPage));
+            IList<ICatalogFeaturedPage> featuredPages = _catalogController.GetFeaturedPages();
+
+            await session.WriteAndFlushAsync(new CatalogPageComposer(args.Mode, catalogPage, featuredPages));
         }
     }
 }

@@ -47,5 +47,15 @@ namespace Starlight.Game.Catalog
 
 			return catalogPages.ToDictionary(row => row.Id, row => row);
 		}
+
+		internal async Task<IDictionary<int, ICatalogFeaturedPage>> GetCatalogFeaturedPages()
+		{
+			using var connection = dbProvider.GetSqlConnection();
+
+			IList<ICatalogFeaturedPage> featured = new List<ICatalogFeaturedPage>(await connection.QueryAsync<CatalogFeaturedPage>(
+				"SELECT * FROM `catalog_featured_pages`"));
+
+			return featured.ToDictionary(row => row.SlotId, row => row);
+		}
 	}
 }
