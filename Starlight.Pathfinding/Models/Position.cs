@@ -87,31 +87,13 @@ namespace Starlight.Pathfinding.Models
 
         public static int CalculateDirection(int x, int y, int x2, int y2)
         {
-            if (x > x2)
-            {
-                if (y == y2)
-                    return 6;
-                else if (y < y2)
-                    return 5;
-                else
-                    return 7;
-            }
-            else if (x < x2)
-            {
-                if (y == y2)
-                    return 2;
-                else if (y < y2)
-                    return 3;
-                else
-                    return 1;
-            }
-            else
-            {
-                if (y < y2)
-                    return 4;
-                else
-                    return 0;
-            }
+            int dx = x2 - x;
+            int dy = y2 - y;
+
+            double angle = Math.Atan2(dy, dx);
+            double octant = Math.Round(8 * angle / (2 * Math.PI)) + 8;
+
+            return ((int)octant + 2) % 8;
         }
     }
 }
