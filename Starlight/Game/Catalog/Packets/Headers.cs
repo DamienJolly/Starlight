@@ -5,6 +5,7 @@
         // Incoming
         internal const short GetCatalogIndexEvent = 1191;
         internal const short GetCatalogModeEvent = 2565;
+        internal const short GetGiftWrappingConfigurationEvent = 3493;
 
         // Recycler
         internal const short GetRecyclerPrizesEvent = 862;
@@ -14,6 +15,7 @@
 
         // Outgoing
         internal const short CatalogPagesListComposer = 267;
+        internal const short GiftWrappingConfigurationComposer = 1353;
 
         // Recycler
         internal const short RecyclerPrizesComposer = 455;

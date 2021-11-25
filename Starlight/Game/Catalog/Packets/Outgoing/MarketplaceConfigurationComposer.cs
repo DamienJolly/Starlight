@@ -13,7 +13,7 @@ namespace Starlight.Game.Catalog.Packets.Outgoing
         public override void Compose(IServerMessage message)
         {
 			//Todo: Catalog marketplace
-			message.WriteBoolean(true); // Dunno?
+			message.WriteBoolean(true); // Marketplace enabled
 			message.WriteInt(1); // Commission percent.
             message.WriteInt(10); // Credits
 			message.WriteInt(5); // Advertisements
