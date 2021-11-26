@@ -24,7 +24,7 @@ namespace Starlight.Game.Navigator
 
             _categories = new Dictionary<string, INavigatorCategory>();
 
-            InitializeNavigator().Wait();
+            //InitializeNavigator().Wait();
         }
 
         internal async Task InitializeNavigator()

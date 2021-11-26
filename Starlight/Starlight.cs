@@ -1,36 +1,41 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Starlight.API.Network;
-using Starlight.DependencyInjection;
-using System;
+using Starlight.Utils;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Starlight
 {
-	public class Starlight
+	public class Starlight : IHostedService
 	{
-        public static readonly string VERSION = "v0.1.0";
+		public static readonly string VERSION = "v0.1.0";
 
-        private readonly IServiceProvider _serviceProvider;
-        private readonly INetworkHandler _networkHandler;
+		private readonly ILogger<Starlight> _logger;
+		private readonly INetworkHandler _networkHandler;
 
-        public Starlight()
-        {
-            _serviceProvider = new ServiceFactory().GetServiceProvider();
+		public Starlight(ILogger<Starlight> logger, INetworkHandler networkHandler)
+		{
+			_logger = logger;
+			_networkHandler = networkHandler;
+		}
 
-            _networkHandler = _serviceProvider.GetService<INetworkHandler>();
-        }
+		public async Task StartAsync(CancellationToken cancellationToken)
+		{
+			ConsoleUtil.ClearConsole();
 
-        public async Task Run()
-        {
-            await _networkHandler.StartServerAsync("Game Server");
-            await _networkHandler.StartServerAsync("RCON Server");
-        }
+			//Initialize services
 
-        public async Task Stop()
-        {
-            await _networkHandler.ServerShutdown();
+			await _networkHandler.StartServerAsync("Game Server");
+			await _networkHandler.StartServerAsync("RCON Server");
+		}
 
-            Environment.Exit(0);
-        }
-    }
+		public async Task StopAsync(CancellationToken cancellationToken)
+		{
+			ConsoleUtil.ClearConsole();
+
+			_logger.LogInformation("Server is shutting down...");
+			await _networkHandler.ServerShutdown();
+		}
+	}
 }

@@ -6,17 +6,17 @@ using Starlight.Config.Configs;
 
 namespace Starlight.Config
 {
-    /// <summary>
-    /// The config service initializes the required services.
-    /// </summary>
-    public class ConfigService : IService
-    {
-        public void RegisterServices(IServiceCollection serviceCollection)
-        {
-            serviceCollection.AddSingleton<IConfigHandler, ConfigHandler>();
+	/// <summary>
+	/// The config service initializes the required services.
+	/// </summary>
+	public class ConfigService : IService
+	{
+		public void RegisterServices(IServiceCollection serviceCollection)
+		{
+			serviceCollection.AddSingleton<IConfigHandler, ConfigHandler>();
 
             serviceCollection.AddTransient<AbstractConfig, DatabaseConfig>();
             serviceCollection.AddTransient<AbstractConfig, ServerConfig>();
-        }
-    }
+		}
+	}
 }

@@ -18,7 +18,7 @@ namespace Starlight.Config
             _logger = logger;
 
             _configs = servers.ToDictionary(config => config.Name);
-            InitializeConfigs();
+            //InitializeConfigs();
 
             _logger.LogInformation("Loaded {0} configuration files", _configs.Count);
         }

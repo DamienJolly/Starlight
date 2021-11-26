@@ -6,6 +6,6 @@ namespace Starlight.API.Communication.Messages
 {
 	public interface IMessageHandler
 	{
-		Task TriggerEventAsync(ISession session, IClientMessage message);
+		ValueTask HandlePacket(ISession session, IClientMessage message);
 	}
 }

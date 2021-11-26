@@ -1,38 +1,45 @@
-﻿using Serilog;
-using Starlight.Utils;
-using System;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Serilog;
+using Starlight.API.Database;
+using Starlight.Database;
+using Starlight.Utils.Extensions;
 
 namespace Starlight
 {
-    public class Program
+	public class Program
 	{
-        private static Starlight _server;
+		private static IHost CreateHost(string[] args)
+		{
+			var hostBuilder = Host.CreateDefaultBuilder(args);
 
-        private async Task Run()
-        {
-            Log.Logger = new LoggerConfiguration().Enrich.FromLogContext().WriteTo.Console().CreateLogger();
-            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+			hostBuilder.ConfigureServices((context, services) =>
+			{
+				services.AddSingleton<IDatabaseHandler, DatabaseHandler>();
 
-            ConsoleUtil.ClearConsole();
+				services.RegisterDependencies();
 
-            _server = new Starlight();
-            await _server.Run();
+				//services.AddTransient<Game>();
 
-            await ReadLoop();
-        }
+				services.AddHostedService<Starlight>();
+			});
 
-        private async Task ReadLoop()
-        {
-            while (true)
-            {
-                if (Console.ReadKey(false).Key == ConsoleKey.Enter)
-                {
-                    await _server.Stop();
-                }
-            }
-        }
+			hostBuilder.UseConsoleLifetime(options =>
+			{
+				options.SuppressStatusMessages = true;
+			});
 
-        public static Task Main() => new Program().Run();
-    }
+			hostBuilder.UseSerilog();
+
+			return hostBuilder.Build();
+		}
+
+		private static void Main(string[] args)
+		{
+			Log.Logger = new LoggerConfiguration().Enrich.FromLogContext().WriteTo.Console().CreateLogger();
+			Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+
+			CreateHost(args).Run();
+		}
+	}
 }

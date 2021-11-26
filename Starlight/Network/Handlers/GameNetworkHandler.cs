@@ -27,7 +27,7 @@ namespace Starlight.Network.Handlers
         {
             ISession session = _sessionController.GetSession(ctx.Channel.Id);
 
-            await _messageHandler.TriggerEventAsync(session, msg);
+            await _messageHandler.HandlePacket(session, msg);
         }
     }
 }
