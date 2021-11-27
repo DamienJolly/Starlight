@@ -38,6 +38,8 @@
 
   <ItemGroup>
     <Folder Include="Game\GameCenter\Packets\Incoming\Args\" />
+    <Folder Include="Game\Items\Packets\Incoming\Args\" />
+    <Folder Include="Game\Items\Packets\Outgoing\" />
     <Folder Include="Game\Navigator\Packets\Incoming\Args\" />
   </ItemGroup>
 

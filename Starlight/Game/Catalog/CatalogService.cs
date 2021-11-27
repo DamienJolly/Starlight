@@ -7,7 +7,7 @@ namespace Starlight.Game.Catalog
 	/// <summary>
 	/// The catalog service initializes the required services.
 	/// </summary>
-	public class Catalog : IService
+	public class CatalogService : IService
 	{
 		public void RegisterServices(IServiceCollection serviceCollection)
 		{
