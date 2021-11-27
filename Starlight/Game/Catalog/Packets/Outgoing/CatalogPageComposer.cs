@@ -27,7 +27,11 @@ namespace Starlight.Game.Catalog.Packets.Outgoing
 
             CatalogPage.PageLayout.ComposePageData(message);
 
-            message.WriteInt(0); // Catalog items count
+            message.WriteInt(CatalogPage.Items.Count);
+            foreach (ICatalogItem item in CatalogPage.Items.Values)
+            {
+                item.Compose(message);
+            }
 
             message.WriteInt(0);
             message.WriteBoolean(false);

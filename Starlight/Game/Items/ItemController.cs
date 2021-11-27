@@ -31,5 +31,8 @@ namespace Starlight.Game.Items
 				_logger.LogInformation("Loaded {0} item datas", _itemDatas.Count);
 			}
 		}
+
+		public bool TryGetItemDataById(uint itemId, out IItemData itemData) =>
+			_itemDatas.TryGetValue(itemId, out itemData);
 	}
 }

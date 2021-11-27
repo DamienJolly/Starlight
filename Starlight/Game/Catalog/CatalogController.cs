@@ -24,16 +24,22 @@ namespace Starlight.Game.Catalog
 		public async ValueTask InitializeCatalog(bool reloading)
 		{
 			_catalogPages = await _catalogDao.GetCatalogPages();
+			int itemsCount = await _catalogDao.GetCatalogItems(_catalogPages);
+
 			_catalogBCPages = await _catalogDao.GetCatalogBCPages();
+			int itemsBCCount = await _catalogDao.GetCatalogBCItems(_catalogBCPages);
+
 			_featuredPages = await _catalogDao.GetCatalogFeaturedPages();
 
 			if (reloading)
 			{
-				_logger.LogInformation("Reloaded {0} catalog pages", _catalogPages.Count);
+				_logger.LogInformation("Reloaded {0} catalog pages and {1} catalog items", _catalogPages.Count, itemsCount);
+				_logger.LogInformation("Reloaded {0} builders club pages and {1} builders club items", _catalogBCPages.Count, itemsBCCount);
 			}
 			else
 			{
-				_logger.LogInformation("Loaded {0} catalog pages", _catalogPages.Count);
+				_logger.LogInformation("Loaded {0} catalog pages and {1} catalog items", _catalogPages.Count, itemsCount);
+				_logger.LogInformation("Loaded {0} builders club pages and {1} builders club items", _catalogBCPages.Count, itemsBCCount);
 			}
 		}
 

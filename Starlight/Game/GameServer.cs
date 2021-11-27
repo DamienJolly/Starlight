@@ -24,10 +24,10 @@ namespace Starlight.Game
 
 		public async ValueTask StartGameServer()
 		{
+			await _itemController.InitializeItems(false);
 			await _catalogController.InitializeCatalog(false);
 			await _navigatorController.InitializeNavigator(false);
 			await _roomController.InitializeRoomModels(false);
-			await _itemController.InitializeItems(false);
 		}
 
 		public ValueTask StopGameServer()
