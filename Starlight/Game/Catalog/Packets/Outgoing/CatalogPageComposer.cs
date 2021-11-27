@@ -36,7 +36,7 @@ namespace Starlight.Game.Catalog.Packets.Outgoing
             message.WriteInt(0);
             message.WriteBoolean(false);
 
-            if (CatalogPage.PageLayout is LayoutFrontpage)
+            if (CatalogPage.PageLayout is LayoutFrontPageFeatured || CatalogPage.PageLayout is LayoutFrontpage)
             {
                 message.WriteInt(FeaturedPages.Count);
                 foreach (ICatalogFeaturedPage featuredPage in FeaturedPages)
