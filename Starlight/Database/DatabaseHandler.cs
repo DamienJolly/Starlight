@@ -1,7 +1,9 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Dapper;
+using MySql.Data.MySqlClient;
 using Starlight.API.Config;
 using Starlight.API.Database;
 using Starlight.Config.Configs;
+using System.Threading.Tasks;
 
 namespace Starlight.Database
 {
@@ -12,7 +14,8 @@ namespace Starlight.Database
 		public DatabaseHandler(IConfigHandler configHandler)
 		{
 			DatabaseConfig config = configHandler.Get<DatabaseConfig>("database");
-			MySqlConnectionStringBuilder stringBuilder = new MySqlConnectionStringBuilder
+
+			var stringBuilder = new MySqlConnectionStringBuilder
 			{
 				UserID = config.GetString("user"),
 				Server = config.GetString("host"),
@@ -20,9 +23,26 @@ namespace Starlight.Database
 				Port = (uint)config.GetInt("port"),
 				Password = config.GetString("password")
 			};
+
 			_connectionString = stringBuilder.ToString();
 		}
 
-		public MySqlConnection GetSqlConnection() => new MySqlConnection(_connectionString);
+		public async ValueTask<bool> TestConnection()
+		{
+			try
+			{
+				using var connection = GetSqlConnection();
+
+				await connection.QueryAsync("SELECT version()");
+			}
+			catch (MySqlException)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		public MySqlConnection GetSqlConnection() => new(_connectionString);
 	}
 }

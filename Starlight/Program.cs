@@ -7,12 +7,13 @@ using Starlight.API.Game;
 using Starlight.Database;
 using Starlight.Game;
 using Starlight.Utils.Extensions;
+using System.Threading.Tasks;
 
 namespace Starlight
 {
 	public class Program
 	{
-		private static IHost CreateHost(string[] args)
+		private static IHostBuilder CreateHostBuilder(string[] args)
 		{
 			var hostBuilder = Host.CreateDefaultBuilder(args);
 
@@ -37,15 +38,15 @@ namespace Starlight
 				options.SuppressStatusMessages = true;
 			});
 
-			return hostBuilder.Build();
+			return hostBuilder;
 		}
 
-		private static void Main(string[] args)
+		private static async Task Main(string[] args)
 		{
 			Log.Logger = new LoggerConfiguration().Enrich.FromLogContext().WriteTo.Console().CreateLogger();
 			Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 
-			CreateHost(args).Run();
+			await CreateHostBuilder(args).Build().RunAsync();
 		}
 	}
 }
