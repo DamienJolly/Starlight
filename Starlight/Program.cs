@@ -1,8 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Starlight.API.Database;
+using Starlight.API.Game;
 using Starlight.Database;
+using Starlight.Game;
 using Starlight.Utils.Extensions;
 
 namespace Starlight
@@ -13,13 +16,18 @@ namespace Starlight
 		{
 			var hostBuilder = Host.CreateDefaultBuilder(args);
 
+			hostBuilder.ConfigureLogging((context, logging) =>
+			{
+				logging.ClearProviders();
+				logging.AddSerilog(dispose: false);
+			});
+
 			hostBuilder.ConfigureServices((context, services) =>
 			{
 				services.AddSingleton<IDatabaseHandler, DatabaseHandler>();
+				services.AddSingleton<IGameServer, GameServer>();
 
 				services.RegisterDependencies();
-
-				//services.AddTransient<Game>();
 
 				services.AddHostedService<Starlight>();
 			});
@@ -28,8 +36,6 @@ namespace Starlight
 			{
 				options.SuppressStatusMessages = true;
 			});
-
-			hostBuilder.UseSerilog();
 
 			return hostBuilder.Build();
 		}

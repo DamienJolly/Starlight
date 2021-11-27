@@ -5,7 +5,10 @@ namespace Starlight.API.Game.Rooms
 {
 	public interface IRoomController
 	{
-		Task<IRoom> LoadRoomByIdAsync(uint id);
-		Task<IRoomData> GetRoomDataByIdAsync(uint id);
+		ValueTask InitializeRoomModels(bool reloading = true);
+
+		Task<IRoom> LoadRoomById(uint id);
+
+		Task<IRoomData> GetRoomDataById(uint id);
 	}
 }

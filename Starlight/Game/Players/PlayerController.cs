@@ -1,59 +1,96 @@
 ﻿using Starlight.API.Game.Players;
 using Starlight.API.Game.Players.Models;
 using Starlight.Game.Players.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Starlight.Game.Players
 {
-    internal class PlayerController : IPlayerController
-    {
-        private readonly PlayerRepository _playerRepository;
+	internal class PlayerController : IPlayerController
+	{
+		private readonly PlayerDao _playerDao;
+		private readonly IDictionary<uint, IPlayer> _players;
+		private readonly IDictionary<string, uint> _playerUsernames;
 
-        /// <summary>
-        /// The player controller is used to serve data without manipulating.
-        /// </summary>
-        /// <param name="playerRepostiory">The player repository(singleton)</param>
-        public PlayerController(PlayerRepository playerRepository)
-        {
-            _playerRepository = playerRepository;
-        }
+		public PlayerController(PlayerDao playerDao)
+		{
+			_playerDao = playerDao;
 
-        public async Task<IPlayerData> GetPlayerDataByIdAsync(uint id) =>
-            await _playerRepository.GetPlayerDataById(id);
+			_players = new Dictionary<uint, IPlayer>();
+			_playerUsernames = new Dictionary<string, uint>();
+		}
 
-        public async Task<IPlayerData> GetPlayerDataBySsoAsync(string sso) =>
-           await _playerRepository.GetPlayerDataBySso(sso);
+		public async Task<IPlayerData> GetPlayerDataById(uint id) =>
+			await _playerDao.GetPlayerDataById(id);
 
-        public async Task<uint> GetPlayerIdByUsernameAsync(string username) =>
-            await _playerRepository.GetPlayerIdByUsername(username);
+		public async Task<IPlayerData> GetPlayerDataBySso(string sso) =>
+			await _playerDao.GetPlayerDataBySso(sso);
 
-        public bool TryAddPlayer(IPlayer player) => 
-            _playerRepository.TryAddPlayer(player);
+		public async Task<IPlayer> GetPlayerById(uint playerId)
+		{
+			if (!TryGetPlayer(playerId, out IPlayer player))
+			{
+				IPlayerData playerData = await GetPlayerDataById(playerId);
+				if (playerData != null)
+				{
+					player = new Player(playerData, null);
+				}
+			}
 
-        public void RemovePlayer(IPlayer player) => 
-            _playerRepository.RemovePlayer(player);
+			return player;
+		}
 
-        public bool TryGetPlayer(uint playerId, out IPlayer player) => 
-            _playerRepository.TryGetPlayer(playerId, out player);
+		public async Task<uint> GetPlayerIdByUsername(string username) =>
+			await _playerDao.GetPlayerIdByUsername(username);
 
-        public bool TryGetPlayer(string playerName, out IPlayer player) =>
-            _playerRepository.TryGetPlayer(playerName, out player);
+		public bool TryAddPlayer(IPlayer player)
+		{
+			if (!_players.TryAdd(player.PlayerData.Id, player))
+				return false;
 
-        public async Task<IPlayer> GetPlayerByIdAsync(uint playerId)
-        {
-            if (!TryGetPlayer(playerId, out IPlayer player))
-            {
-                IPlayerData playerData = await GetPlayerDataByIdAsync(playerId);
-                if (playerData != null)
-                {
-                    player = new Player(playerData, null);
-                }
-            }
+			if (!_playerUsernames.TryAdd(player.PlayerData.Username, player.PlayerData.Id))
+			{
+				_players.Remove(player.PlayerData.Id);
+				return false;
+			}
 
-            return player;
-        }
+			return true;
+		}
 
-        public async Task<IPlayerSettings> GetPlayerSettingsByIdAsync(uint id) =>
-            await _playerRepository.GetPlayerSettingsById(id);
-    }
+		public void RemovePlayer(IPlayer player)
+		{
+			// todo: Update player
+
+			_players.Remove(player.PlayerData.Id);
+			_playerUsernames.Remove(player.PlayerData.Username);
+		}
+
+		public bool TryGetPlayer(uint playerId, out IPlayer player) =>
+			_players.TryGetValue(playerId, out player);
+
+		public bool TryGetPlayer(string playerName, out IPlayer player)
+		{
+			player = null;
+
+			if (_playerUsernames.TryGetValue(playerName, out uint playerId))
+			{
+				return _players.TryGetValue(playerId, out player);
+			}
+
+			return false;
+		}
+
+		public async Task<IPlayerSettings> GetPlayerSettingsById(uint id)
+		{
+			IPlayerSettings playerSettings = await _playerDao.GetPlayerSettingsById(id);
+
+			if (playerSettings == null)
+			{
+				await _playerDao.AddPlayerSettings(id);
+				playerSettings = await _playerDao.GetPlayerSettingsById(id);
+			}
+
+			return playerSettings;
+		}
+	}
 }

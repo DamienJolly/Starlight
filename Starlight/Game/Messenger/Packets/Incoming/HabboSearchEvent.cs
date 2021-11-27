@@ -10,30 +10,30 @@ using System.Threading.Tasks;
 
 namespace Starlight.Game.Messenger.Packets.Incoming
 {
-    public class HabboSearchEvent : AbstractMessageEvent<SearchArgs>
-    {
+	public class HabboSearchEvent : AbstractMessageEvent<SearchArgs>
+	{
 		public override short Header => Headers.HabboSearchEvent;
 
-        private readonly IMessengerController _messengerController;
+		private readonly IMessengerController _messengerController;
 
-        public HabboSearchEvent(IMessengerController messengerController)
-        {
-            _messengerController = messengerController;
-        }
+		public HabboSearchEvent(IMessengerController messengerController)
+		{
+			_messengerController = messengerController;
+		}
 
-        protected override async ValueTask Execute(ISession session, SearchArgs args)
-        {
-            string username = args.Username;
+		protected override async ValueTask Execute(ISession session, SearchArgs args)
+		{
+			string username = args.Username;
 
-            if (string.IsNullOrEmpty(username))
-                return;
+			if (string.IsNullOrEmpty(username))
+				return;
 
-            IList<IPlayerData> results = await _messengerController.GetSearchPlayersAsync(username);
+			IList<IPlayerData> results = await _messengerController.GetSearchPlayers(username);
 
-            IList<IPlayerData> friends = results.Where(data => session.Player.MessengerComponent.HasFriend(data.Id)).ToList();
-            IList<IPlayerData> notFriends = results.Where(data => !session.Player.MessengerComponent.HasFriend(data.Id)).ToList();
+			IList<IPlayerData> friends = results.Where(data => session.Player.MessengerComponent.HasFriend(data.Id)).ToList();
+			IList<IPlayerData> notFriends = results.Where(data => !session.Player.MessengerComponent.HasFriend(data.Id)).ToList();
 
-            await session.WriteAndFlushAsync(new HabboSearchResultComposer(friends, notFriends));
-        }
-    }
+			await session.WriteAndFlushAsync(new HabboSearchResultComposer(friends, notFriends));
+		}
+	}
 }

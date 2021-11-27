@@ -8,27 +8,27 @@ using System.Threading.Tasks;
 
 namespace Starlight.Game.Messenger.Packets.Incoming
 {
-    public class SetRelationshipStatusEvent : AbstractMessageEvent<RelationshipArgs>
-    {
+	public class SetRelationshipStatusEvent : AbstractMessageEvent<RelationshipArgs>
+	{
 		public override short Header => Headers.SetRelationshipStatusEvent;
 
-        private readonly IMessengerController _messengerController;
+		private readonly IMessengerController _messengerController;
 
-        public SetRelationshipStatusEvent(IMessengerController messengerController)
-        {
-            _messengerController = messengerController;
-        }
+		public SetRelationshipStatusEvent(IMessengerController messengerController)
+		{
+			_messengerController = messengerController;
+		}
 
-        protected override async ValueTask Execute(ISession session, RelationshipArgs args)
-        {
-            IMessengerFriend friend = session.Player.MessengerComponent.GetFriend(args.TargetId);
-            if (friend == null)
-                return;
+		protected override async ValueTask Execute(ISession session, RelationshipArgs args)
+		{
+			IMessengerFriend friend = session.Player.MessengerComponent.GetFriend(args.TargetId);
+			if (friend == null)
+				return;
 
-            friend.Relation = args.RelationshipType;
+			friend.Relation = args.RelationshipType;
 
-            session.Player.MessengerComponent.QueueUpdate(MessengerUpdateType.UpdateFriend, friend);
-            await _messengerController.UpdatePlayerRelationAsync(friend);
-        }
-    }
+			session.Player.MessengerComponent.QueueUpdate(MessengerUpdateType.UpdateFriend, friend);
+			await _messengerController.UpdatePlayerRelation(friend);
+		}
+	}
 }

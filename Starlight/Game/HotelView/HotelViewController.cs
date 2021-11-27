@@ -5,23 +5,31 @@ using System.Threading.Tasks;
 
 namespace Starlight.Game.HotelView
 {
-    internal class HotelViewController : IHotelViewController
-    {
-        private readonly HotelViewRepository _hotelViewRepository;
+	internal class HotelViewController : IHotelViewController
+	{
+		private readonly HotelViewDao _hotelViewDao;
+		private IList<IHallOfFamer> _hallOfFamers;
+		private IList<IArticle> _articles;
 
-        /// <summary>
-        /// The hotel view controller is used to serve data without manipulating.
-        /// </summary>
-        /// <param name="hotelViewRepository">The hotel view repository(singleton)</param>
-        public HotelViewController(HotelViewRepository hotelViewRepository)
-        {
-            _hotelViewRepository = hotelViewRepository;
-        }
+		public HotelViewController(HotelViewDao hotelViewDao)
+		{
+			_hotelViewDao = hotelViewDao;
+		}
 
-        public async Task<IList<IHallOfFamer>> GetHallOfFamersAsync() =>
-            await _hotelViewRepository.GetHallOfFamersAsync();
+		public async Task<IList<IHallOfFamer>> GetHallOfFamers()
+		{
+			if (_hallOfFamers != null) return _hallOfFamers;
 
-        public async Task<IList<IArticle>> GetNewsArticlesAsync() =>
-            await _hotelViewRepository.GetNewsArticlesAsync();
-    }
+			_hallOfFamers = await _hotelViewDao.GetHallOfFamers();
+			return _hallOfFamers;
+		}
+
+		public async Task<IList<IArticle>> GetNewsArticles()
+		{
+			if (_articles != null) return _articles;
+
+			_articles = await _hotelViewDao.GetNewsArticles();
+			return _articles;
+		}
+	}
 }

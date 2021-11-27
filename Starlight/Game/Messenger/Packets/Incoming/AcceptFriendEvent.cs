@@ -11,63 +11,63 @@ using System.Threading.Tasks;
 
 namespace Starlight.Game.Messenger.Packets.Incoming
 {
-    public class AcceptFriendEvent : AbstractMessageEvent<AcceptFriendArgs>
-    {
+	public class AcceptFriendEvent : AbstractMessageEvent<AcceptFriendArgs>
+	{
 		public override short Header => Headers.AcceptFriendEvent;
 
-        private readonly IMessengerController _messengerController;
-        private readonly IPlayerController _playerController;
+		private readonly IMessengerController _messengerController;
+		private readonly IPlayerController _playerController;
 
-        public AcceptFriendEvent(IMessengerController messengerController, IPlayerController playerController)
-        {
-            _messengerController = messengerController;
-            _playerController = playerController;
-        }
+		public AcceptFriendEvent(IMessengerController messengerController, IPlayerController playerController)
+		{
+			_messengerController = messengerController;
+			_playerController = playerController;
+		}
 
-        protected override async ValueTask Execute(ISession session, AcceptFriendArgs args)
-        {
-            foreach (uint targetId in args.TargetIds)
-            {
-                if (!session.Player.MessengerComponent.HasRequest(targetId))
-                    continue;
+		protected override async ValueTask Execute(ISession session, AcceptFriendArgs args)
+		{
+			foreach (uint targetId in args.TargetIds)
+			{
+				if (!session.Player.MessengerComponent.HasRequest(targetId))
+					continue;
 
-                if (session.Player.MessengerComponent.HasFriend(targetId))
-                    continue;
+				if (session.Player.MessengerComponent.HasFriend(targetId))
+					continue;
 
-                // Todo: friend limits, with errors?
+				// Todo: friend limits, with errors?
 
-                session.Player.MessengerComponent.RemoveRequest(targetId);
-                await _messengerController.RemovePlayerRequestAsync(session.Player.PlayerData.Id, targetId);
+				session.Player.MessengerComponent.RemoveRequest(targetId);
+				await _messengerController.RemovePlayerRequest(session.Player.PlayerData.Id, targetId);
 
-                IPlayer targetPlayer = await _playerController.GetPlayerByIdAsync(targetId);
-                if (targetPlayer == null)
-                    continue;
+				IPlayer targetPlayer = await _playerController.GetPlayerById(targetId);
+				if (targetPlayer == null)
+					continue;
 
-                CreateFriend(targetPlayer, session.Player);
-                CreateFriend(session.Player, targetPlayer);
+				CreateFriend(targetPlayer, session.Player);
+				CreateFriend(session.Player, targetPlayer);
 
-                await _messengerController.AddPlayerFriendAsync(session.Player.PlayerData.Id, targetPlayer.PlayerData.Id);
-            }
-        }
+				await _messengerController.AddPlayerFriend(session.Player.PlayerData.Id, targetPlayer.PlayerData.Id);
+			}
+		}
 
-        private void CreateFriend(IPlayer playerOne, IPlayer playerTwo)
-        {
-            if (playerOne.Session == null || playerOne.MessengerComponent == null)
-                return;
+		private void CreateFriend(IPlayer playerOne, IPlayer playerTwo)
+		{
+			if (playerOne.Session == null || playerOne.MessengerComponent == null)
+				return;
 
 			IMessengerFriend friend = new MessengerFriend
-            {
-                PlayerId = playerOne.PlayerData.Id,
-                TargetId = playerTwo.PlayerData.Id,
-                Username = playerTwo.PlayerData.Username,
-                Figure = playerTwo.PlayerData.Figure,
-                Gender = playerTwo.PlayerData.Gender,
-                Motto = playerTwo.PlayerData.Motto
-            }; 
+			{
+				PlayerId = playerOne.PlayerData.Id,
+				TargetId = playerTwo.PlayerData.Id,
+				Username = playerTwo.PlayerData.Username,
+				Figure = playerTwo.PlayerData.Figure,
+				Gender = playerTwo.PlayerData.Gender,
+				Motto = playerTwo.PlayerData.Motto
+			};
 
-            playerOne.MessengerComponent.AddFriend(friend);
-            playerOne.MessengerComponent.QueueUpdate(MessengerUpdateType.AddFriend, friend);
-            playerOne.MessengerComponent.ForceUpdate();
-        }
-    }
+			playerOne.MessengerComponent.AddFriend(friend);
+			playerOne.MessengerComponent.QueueUpdate(MessengerUpdateType.AddFriend, friend);
+			playerOne.MessengerComponent.ForceUpdate();
+		}
+	}
 }

@@ -8,32 +8,33 @@ using System.Threading.Tasks;
 
 namespace Starlight.Game.Messenger.Packets.Incoming
 {
-    public class MessengerInitEvent : AbstractAsyncMessage
-    {
-        // Todo: Make these configurable
-        private static readonly int MAX_FRIENDS = 100;
-        private static readonly int MAX_FRIENDS_HC = 200;
+	public class MessengerInitEvent : AbstractAsyncMessage
+	{
+		// Todo: Make these configurable
+		private static readonly int MAX_FRIENDS = 100;
 
-        public override short Header => Headers.MessengerInitEvent;
+		private static readonly int MAX_FRIENDS_HC = 200;
 
-        private readonly IMessengerController _messengerController;
+		public override short Header => Headers.MessengerInitEvent;
 
-        public MessengerInitEvent(IMessengerController messengerController)
-        {
-            _messengerController = messengerController;
-        }
+		private readonly IMessengerController _messengerController;
 
-        protected override async ValueTask Execute(ISession session)
-        {
-            session.Player.MessengerComponent.Categories = await _messengerController.GetPlayerCategoriesByIdAsync(session.Player.PlayerData.Id);
+		public MessengerInitEvent(IMessengerController messengerController)
+		{
+			_messengerController = messengerController;
+		}
 
-            await session.WriteAndFlushAsync(new MessengerInitComposer(MAX_FRIENDS, MAX_FRIENDS_HC, session.Player.MessengerComponent.Categories));
+		protected override async ValueTask Execute(ISession session)
+		{
+			session.Player.MessengerComponent.Categories = await _messengerController.GetPlayerCategoriesById(session.Player.PlayerData.Id);
 
-            IList<IMessengerMessage> messages = await _messengerController.GetPlayerMessagesByIdAsync(session.Player.PlayerData.Id);
-            foreach (IMessengerMessage message in messages)
-            {
-                await session.WriteAndFlushAsync(new NewConsoleMessageComposer(message));
-            }
-        }
-    }
+			await session.WriteAndFlushAsync(new MessengerInitComposer(MAX_FRIENDS, MAX_FRIENDS_HC, session.Player.MessengerComponent.Categories));
+
+			IList<IMessengerMessage> messages = await _messengerController.GetPlayerMessagesById(session.Player.PlayerData.Id);
+			foreach (IMessengerMessage message in messages)
+			{
+				await session.WriteAndFlushAsync(new NewConsoleMessageComposer(message));
+			}
+		}
+	}
 }

@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace Starlight.Game.Messenger.Packets.Incoming
 {
-    public class GetFriendsEvent : AbstractAsyncMessage
-    {
+	public class GetFriendsEvent : AbstractAsyncMessage
+	{
 		public override short Header => Headers.GetFriendsEvent;
 
-        private readonly IMessengerController _messengerController;
+		private readonly IMessengerController _messengerController;
 
-        public GetFriendsEvent(IMessengerController messengerController)
-        {
-            _messengerController = messengerController;
-        }
+		public GetFriendsEvent(IMessengerController messengerController)
+		{
+			_messengerController = messengerController;
+		}
 
-        protected override async ValueTask Execute(ISession session)
-        {
-            session.Player.MessengerComponent.Friends = await _messengerController.GetPlayerFriendsByIdAsync(session.Player.PlayerData.Id);
+		protected override async ValueTask Execute(ISession session)
+		{
+			session.Player.MessengerComponent.Friends = await _messengerController.GetPlayerFriendsById(session.Player.PlayerData.Id);
 
 			await session.WriteAndFlushAsync(new FriendsComposer(session.Player.MessengerComponent.Friends));
 		}
-    }
+	}
 }

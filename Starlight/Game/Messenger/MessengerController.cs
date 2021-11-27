@@ -6,49 +6,49 @@ using System.Threading.Tasks;
 
 namespace Starlight.Game.Messenger
 {
-    internal class MessengerController : IMessengerController
-    {
-        private readonly MessengerRepository _messengerRepository;
+	internal class MessengerController : IMessengerController
+	{
+		private readonly MessengerDao _messengerDao;
 
-        public MessengerController(MessengerRepository messengerRepository)
-        {
-            _messengerRepository = messengerRepository;
-        }
+		public MessengerController(MessengerDao messengerDao)
+		{
+			_messengerDao = messengerDao;
+		}
 
-        public async Task<IList<IMessengerFriend>> GetPlayerFriendsByIdAsync(uint id) =>
-            await _messengerRepository.GetPlayerFriendsById(id);
+		public async Task<IList<IMessengerFriend>> GetPlayerFriendsById(uint id) =>
+			await _messengerDao.GetPlayerFriendsById(id);
 
-        public async Task<IList<IMessengerRequest>> GetPlayerRequestsByIdAsync(uint id) =>
-            await _messengerRepository.GetPlayerRequestsById(id);
+		public async Task<IList<IMessengerRequest>> GetPlayerRequestsById(uint id) =>
+			await _messengerDao.GetPlayerRequestsById(id);
 
-        public async Task<IList<IMessengerMessage>> GetPlayerMessagesByIdAsync(uint playerId) =>
-            await _messengerRepository.GetPlayerMessagesById(playerId);
+		public async Task<IList<IMessengerMessage>> GetPlayerMessagesById(uint playerId) =>
+		   await _messengerDao.GetPlayerMessagesById(playerId);
 
-        public async Task<IList<IMessengerCategory>> GetPlayerCategoriesByIdAsync(uint playerId) =>
-           await _messengerRepository.GetPlayerCategoriesById(playerId);
+		public async Task<IList<IMessengerCategory>> GetPlayerCategoriesById(uint playerId) =>
+		   await _messengerDao.GetPlayerCategoriesById(playerId);
 
-        public async Task<IList<IPlayerData>> GetSearchPlayersAsync(string username) =>
-            await _messengerRepository.GetSearchPlayers(username);
+		public async Task<IList<IPlayerData>> GetSearchPlayers(string username) =>
+			await _messengerDao.GetSearchPlayers(username);
 
-        public async Task AddPlayerFriendAsync(uint playerId, uint targetId) =>
-            await _messengerRepository.AddPlayerFriend(playerId, targetId);
+		public async Task AddPlayerFriend(uint playerId, uint targetId) =>
+			await _messengerDao.AddPlayerFriend(playerId, targetId);
 
-        public async Task AddPlayerRequestAsync(uint playerId, uint targetId) =>
-            await _messengerRepository.AddPlayerRequest(playerId, targetId);
+		public async Task AddPlayerRequest(uint playerId, uint targetId) =>
+			await _messengerDao.AddPlayerRequest(playerId, targetId);
 
-        public async Task AddPlayerMessageAsync(IMessengerMessage privateMessage) =>
-            await _messengerRepository.AddPlayerMessage(privateMessage);
+		public async Task AddPlayerMessage(IMessengerMessage privateMessage) =>
+			await _messengerDao.AddPlayerMessage(privateMessage);
 
-        public async Task RemovePlayerFriendAsync(uint playerId, uint targetId) =>
-            await _messengerRepository.RemovePlayerFriend(playerId, targetId);
+		public async Task RemovePlayerFriend(uint playerId, uint targetId) =>
+			await _messengerDao.RemovePlayerFriend(playerId, targetId);
 
-        public async Task RemovePlayerRequestAsync(uint playerId, uint targetId) =>
-            await _messengerRepository.RemovePlayerRequest(playerId, targetId);
+		public async Task RemovePlayerRequest(uint playerId, uint targetId) =>
+			await _messengerDao.RemovePlayerRequest(playerId, targetId);
 
-        public async Task RemoveAllPlayerRequestsAsync(uint playerId) =>
-            await _messengerRepository.RemoveAllPlayerRequests(playerId);
+		public async Task RemoveAllPlayerRequests(uint playerId) =>
+			await _messengerDao.RemoveAllPlayerRequests(playerId);
 
-        public async Task UpdatePlayerRelationAsync(IMessengerFriend friend) =>
-            await _messengerRepository.UpdatePlayerRelation(friend);
-    }
+		public async Task UpdatePlayerRelation(IMessengerFriend friend) =>
+			await _messengerDao.UpdatePlayerRelation(friend);
+	}
 }

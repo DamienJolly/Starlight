@@ -8,31 +8,31 @@ using System.Threading.Tasks;
 
 namespace Starlight.Game.Rooms.Packets.Incoming
 {
-    public class RequestRoomLoadEvent : AbstractMessageEvent<RoomLoadArgs>
-    {
-        public override short Header => Headers.RequestRoomLoadEvent;
+	public class RequestRoomLoadEvent : AbstractMessageEvent<RoomLoadArgs>
+	{
+		public override short Header => Headers.RequestRoomLoadEvent;
 
-        private readonly IRoomController _roomController;
+		private readonly IRoomController _roomController;
 
-        public RequestRoomLoadEvent(IRoomController roomController)
-        {
-            _roomController = roomController;
-        }
+		public RequestRoomLoadEvent(IRoomController roomController)
+		{
+			_roomController = roomController;
+		}
 
-        protected override async ValueTask Execute(ISession session, RoomLoadArgs args)
-        {
-            IRoom room = await _roomController.LoadRoomByIdAsync(args.RoomId);
-            if (room == null)
-            {
-                await session.WriteAndFlushAsync(new RoomCloseComposer());
-                return;
-            }
+		protected override async ValueTask Execute(ISession session, RoomLoadArgs args)
+		{
+			IRoom room = await _roomController.LoadRoomById(args.RoomId);
+			if (room == null)
+			{
+				await session.WriteAndFlushAsync(new RoomCloseComposer());
+				return;
+			}
 
-            session.CurrentRoom = room;
+			session.CurrentRoom = room;
 
-            await session.WriteAndFlushAsync(new RoomOpenComposer());
-            await session.WriteAndFlushAsync(new RoomModelComposer(room.RoomData));
-            //await session.WriteAndFlushAsync(new RoomScoreComposer(room.Score));
-        }
-    }
+			await session.WriteAndFlushAsync(new RoomOpenComposer());
+			await session.WriteAndFlushAsync(new RoomModelComposer(room.RoomData));
+			//await session.WriteAndFlushAsync(new RoomScoreComposer(room.Score));
+		}
+	}
 }
