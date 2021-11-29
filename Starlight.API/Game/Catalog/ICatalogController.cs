@@ -34,5 +34,7 @@ namespace Starlight.API.Game.Catalog
 		/// <param name="page">The page if found</param>
 		/// <returns>True of false if the page was found</returns>
 		bool TryGetCatalogPage(int pageId, string mode, out ICatalogPage page);
+
+		ICatalogItem GetCatalogItemByOfferId(int offerId);
 	}
 }

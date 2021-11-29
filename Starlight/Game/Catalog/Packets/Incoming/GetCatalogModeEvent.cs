@@ -9,22 +9,23 @@ using System.Threading.Tasks;
 
 namespace Starlight.Game.Catalog.Packets.Incoming
 {
-    public class GetCatalogModeEvent : AbstractMessageEvent<CatalogModeArgs>
-    {
-        public override short Header => Headers.GetCatalogModeEvent;
+	public class GetCatalogModeEvent : AbstractMessageEvent<CatalogModeArgs>
+	{
+		public override short Header => Headers.GetCatalogModeEvent;
 
-        private readonly ICatalogController _catalogController;
+		private readonly ICatalogController _catalogController;
 
-        public GetCatalogModeEvent(ICatalogController catalogController)
-        {
-            _catalogController = catalogController;
-        }
+		public GetCatalogModeEvent(ICatalogController catalogController)
+		{
+			_catalogController = catalogController;
+		}
 
-        protected override async ValueTask Execute(ISession session, CatalogModeArgs args)
-        {
-            IDictionary<int, ICatalogPage> catalogPages = _catalogController.GetCatalogPages(args.Mode);
+		protected override async ValueTask Execute(ISession session, CatalogModeArgs args)
+		{
+			IDictionary<int, ICatalogPage> catalogPages = _catalogController.GetCatalogPages(args.Mode);
 
-            await session.WriteAndFlushAsync(new CatalogPagesListComposer(session.Player, args.Mode, catalogPages));
-        }
-    }
+			await session.WriteAndFlushAsync(new CatalogModeComposer(args.Mode));
+			await session.WriteAndFlushAsync(new CatalogPagesListComposer(session.Player, args.Mode, catalogPages));
+		}
+	}
 }
