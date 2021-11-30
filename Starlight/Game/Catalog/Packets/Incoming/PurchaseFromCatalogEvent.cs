@@ -85,7 +85,11 @@ namespace Starlight.Game.Catalog.Packets.Incoming
 
 			foreach (ICatalogItemData itemData in catalogItem.Items)
 			{
-				// Todo: Purchase items
+				if (!await _catalogController.TryHandlePurchase(session, args.ExtraData, itemData, args.Amount))
+				{
+					await session.WriteAndFlushAsync(new PurchaseErrorComposer(PurchaseErrorComposer.SERVER_ERROR));
+					return;
+				}
 			}
 
 			if (totalCredits > 0)
@@ -99,6 +103,7 @@ namespace Starlight.Game.Catalog.Packets.Incoming
 			await session.WriteAndFlushAsync(new PurchaseOKComposer(catalogItem));
 		}
 
+		// Thanks to Alejandro for this
 		private int CalculateDiscountedPrice(int originalPrice, int amount)
 		{
 			int basicDiscount = amount / DiscountComposer.DISCOUNT_BATCH_SIZE;

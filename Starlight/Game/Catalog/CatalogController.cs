@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Starlight.API.Game.Catalog;
+using Starlight.API.Game.Catalog.Handlers;
 using Starlight.API.Game.Catalog.Models;
+using Starlight.API.Game.Session.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,16 +13,38 @@ namespace Starlight.Game.Catalog
 	{
 		private readonly CatalogDao _catalogDao;
 		private readonly ILogger<CatalogController> _logger;
+
+		private readonly IDictionary<string, IPurchaseHandler> _purchaseHandlers;
 		private IDictionary<int, ICatalogPage> _catalogBCPages;
 		private IDictionary<int, ICatalogPage> _catalogPages;
 		private IDictionary<int, ICatalogItem> _catalogItems;
 		private IDictionary<int, ICatalogItem> _catalogBCItems;
 		private IDictionary<int, ICatalogFeaturedPage> _featuredPages;
 
-		public CatalogController(ILogger<CatalogController> logger, CatalogDao catalogDao)
+		public CatalogController(ILogger<CatalogController> logger, CatalogDao catalogDao, IEnumerable<IPurchaseHandler> purchaseHandlers)
 		{
 			_logger = logger;
 			_catalogDao = catalogDao;
+			_purchaseHandlers = new Dictionary<string, IPurchaseHandler>();
+
+			foreach (IPurchaseHandler handler in purchaseHandlers)
+			{
+				foreach (string name in handler.Names)
+				{
+					_purchaseHandlers.TryAdd(name, handler);
+				}
+			}
+		}
+
+		public async ValueTask<bool> TryHandlePurchase(ISession session, string extraData, ICatalogItemData catalogItem, int amount)
+		{
+			if (!_purchaseHandlers.TryGetValue(catalogItem.ItemData.InteractionType, out IPurchaseHandler handler))
+			{
+				if (!_purchaseHandlers.TryGetValue("default", out handler))
+					return false;
+			}
+
+			return await handler.TryHandlePurchase(session, extraData, catalogItem, amount);
 		}
 
 		public async ValueTask InitializeCatalog(bool reloading)

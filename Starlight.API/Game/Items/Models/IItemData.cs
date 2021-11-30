@@ -20,6 +20,6 @@
 		bool AllowInventoryStack { get; }
 		bool AllowMarketplace { get; }
 		int EffectId { get; }
-		string Interaction { get; }
+		string InteractionType { get; }
 	}
 }

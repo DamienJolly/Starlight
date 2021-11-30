@@ -22,6 +22,6 @@ namespace Starlight.Game.Items.Models
 		public bool AllowInventoryStack { get; }
 		public bool AllowMarketplace { get; }
 		public int EffectId { get; }
-		public string Interaction { get; }
+		public string InteractionType { get; }
 	}
 }

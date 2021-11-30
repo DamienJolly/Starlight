@@ -1,4 +1,5 @@
 ﻿using Starlight.API.Game.Catalog.Models;
+using Starlight.API.Game.Session.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -50,5 +51,6 @@ namespace Starlight.API.Game.Catalog
 		/// <param name="offerId">The offer id to search</param>
 		/// <returns>The catalog item if exists</returns>
 		ICatalogItem GetCatalogItemByOfferId(int offerId);
+		ValueTask<bool> TryHandlePurchase(ISession session, string extraData, ICatalogItemData catalogItem, int amount);
 	}
 }
