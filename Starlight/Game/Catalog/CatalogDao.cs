@@ -69,9 +69,8 @@ namespace Starlight.Game.Catalog
 			return featured.ToDictionary(row => row.SlotId, row => row);
 		}
 
-		internal async Task<int> GetCatalogItems(IDictionary<int, ICatalogPage> catalogPages)
+		internal async Task<IDictionary<int, ICatalogItem>> GetCatalogItems(IDictionary<int, ICatalogPage> catalogPages)
 		{
-			int itemsCount = 0;
 			using var connection = dbProvider.GetSqlConnection();
 
 			IList<ICatalogItem> catalogItems = new List<ICatalogItem>(await connection.QueryAsync<CatalogItem>(
@@ -91,16 +90,13 @@ namespace Starlight.Game.Catalog
 						catalogPage.OfferIds.Add(catalogItem.OfferId);
 					}
 				}
-
-				itemsCount++;
 			}
 
-			return itemsCount;
+			return catalogItems.ToDictionary(row => row.Id, row => row);
 		}
 
-		internal async Task<int> GetCatalogBCItems(IDictionary<int, ICatalogPage> catalogPages)
+		internal async Task<IDictionary<int, ICatalogItem>> GetCatalogBCItems(IDictionary<int, ICatalogPage> catalogPages)
 		{
-			int itemsCount = 0;
 			using var connection = dbProvider.GetSqlConnection();
 
 			IList<ICatalogItem> catalogItems = new List<ICatalogItem>(await connection.QueryAsync<CatalogItem>(
@@ -120,11 +116,9 @@ namespace Starlight.Game.Catalog
 						catalogPage.OfferIds.Add(catalogItem.OfferId);
 					}
 				}
-
-				itemsCount++;
 			}
 
-			return itemsCount;
+			return catalogItems.ToDictionary(row => row.Id, row => row);
 		}
 
 		private void LoadCatalogItems(ICatalogItem catalogItem)

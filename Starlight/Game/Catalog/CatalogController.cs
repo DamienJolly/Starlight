@@ -13,6 +13,8 @@ namespace Starlight.Game.Catalog
 		private readonly ILogger<CatalogController> _logger;
 		private IDictionary<int, ICatalogPage> _catalogBCPages;
 		private IDictionary<int, ICatalogPage> _catalogPages;
+		private IDictionary<int, ICatalogItem> _catalogItems;
+		private IDictionary<int, ICatalogItem> _catalogBCItems;
 		private IDictionary<int, ICatalogFeaturedPage> _featuredPages;
 
 		public CatalogController(ILogger<CatalogController> logger, CatalogDao catalogDao)
@@ -24,22 +26,22 @@ namespace Starlight.Game.Catalog
 		public async ValueTask InitializeCatalog(bool reloading)
 		{
 			_catalogPages = await _catalogDao.GetCatalogPages();
-			int itemsCount = await _catalogDao.GetCatalogItems(_catalogPages);
+			_catalogItems = await _catalogDao.GetCatalogItems(_catalogPages);
 
 			_catalogBCPages = await _catalogDao.GetCatalogBCPages();
-			int itemsBCCount = await _catalogDao.GetCatalogBCItems(_catalogBCPages);
+			_catalogBCItems = await _catalogDao.GetCatalogBCItems(_catalogBCPages);
 
 			_featuredPages = await _catalogDao.GetCatalogFeaturedPages();
 
 			if (reloading)
 			{
-				_logger.LogInformation("Reloaded {0} catalog pages and {1} catalog items", _catalogPages.Count, itemsCount);
-				_logger.LogInformation("Reloaded {0} builders club pages and {1} builders club items", _catalogBCPages.Count, itemsBCCount);
+				_logger.LogInformation("Reloaded {0} catalog pages and {1} catalog items", _catalogPages.Count, _catalogItems.Count);
+				_logger.LogInformation("Reloaded {0} builders club pages and {1} builders club items", _catalogBCPages.Count, _catalogBCItems.Count);
 			}
 			else
 			{
-				_logger.LogInformation("Loaded {0} catalog pages and {1} catalog items", _catalogPages.Count, itemsCount);
-				_logger.LogInformation("Loaded {0} builders club pages and {1} builders club items", _catalogBCPages.Count, itemsBCCount);
+				_logger.LogInformation("Loaded {0} catalog pages and {1} catalog items", _catalogPages.Count, _catalogItems.Count);
+				_logger.LogInformation("Loaded {0} builders club pages and {1} builders club items", _catalogBCPages.Count, _catalogBCItems.Count);
 			}
 		}
 
@@ -79,6 +81,15 @@ namespace Starlight.Game.Catalog
 			}
 
 			return catalogItem;
+		}
+
+		public bool TryGetCatalogItem(int itemId, string mode, out ICatalogItem item)
+		{
+			return mode switch
+			{
+				"BUILDERS_CLUB" => _catalogBCItems.TryGetValue(itemId, out item),
+				_ => _catalogItems.TryGetValue(itemId, out item),
+			};
 		}
 	}
 }

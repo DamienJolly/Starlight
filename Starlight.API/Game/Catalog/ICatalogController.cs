@@ -35,6 +35,15 @@ namespace Starlight.API.Game.Catalog
 		/// <returns>True of false if the page was found</returns>
 		bool TryGetCatalogPage(int pageId, string mode, out ICatalogPage page);
 
+		/// <summary>
+		/// Tries to get a catalog item
+		/// </summary>
+		/// <param name="itemId">The item id to recieve</param>
+		/// <param name="mode">The catalog viewing mode</param>
+		/// <param name="item">The item if found</param>
+		/// <returns>True of false if the item was found</returns>
+		bool TryGetCatalogItem(int itemId, string mode, out ICatalogItem item);
+
 		ICatalogItem GetCatalogItemByOfferId(int offerId);
 	}
 }

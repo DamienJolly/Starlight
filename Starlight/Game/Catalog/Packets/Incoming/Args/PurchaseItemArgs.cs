@@ -3,17 +3,19 @@ using Starlight.API.Communication.Messages.Protocols;
 
 namespace Starlight.Game.Catalog.Packets.Incoming.Args
 {
-	public class CatalogPageArgs : IMessageArgs
+	public class PurchaseItemArgs : IMessageArgs
 	{
 		public int PageId { get; private set; }
-		public int Unknown { get; private set; }
-		public string Mode { get; private set; }
+		public int ItemId { get; private set; }
+		public string ExtraData { get; private set; }
+		public int Amount { get; private set; }
 
 		public void Parse(IClientMessage message)
 		{
 			PageId = message.ReadInt();
-			Unknown = message.ReadInt(); // Dunno?
-			Mode = message.ReadString().ToUpper();
+			ItemId = message.ReadInt();
+			ExtraData = message.ReadString();
+			Amount = message.ReadInt();
 		}
 	}
 }

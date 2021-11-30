@@ -10,6 +10,7 @@
 		internal const short GetDiscountEvent = 703;
 		internal const short GetCatalogPageEvent = 3547;
 		internal const short CatalogSearchedItemEvent = 1846;
+		internal const short PurchaseFromCatalogEvent = 2687;
 
 		// Recycler
 		internal const short GetRecyclerPrizesEvent = 862;
@@ -25,6 +26,9 @@
 		internal const short CatalogPageComposer = 3933;
 		internal const short CatalogSearchResultComposer = 2090;
 		internal const short CatalogModeComposer = 363;
+		internal const short PurchaseErrorComposer = 1103;
+		internal const short PurchaseNotAllowedComposer = 472;
+		internal const short PurchaseOKComposer = 3661;
 
 		// Recycler
 		internal const short RecyclerPrizesComposer = 455;
