@@ -21,6 +21,9 @@ namespace Starlight.Game.Catalog.Packets.Incoming
 
 		protected override async ValueTask Execute(ISession session, SearchItemArgs args)
 		{
+			if (args.OfferId == -1)
+				return;
+
 			ICatalogItem catalogItem = _catalogController.GetCatalogItemByOfferId(args.OfferId);
 			if (catalogItem == null)
 				return;

@@ -66,22 +66,8 @@ namespace Starlight.Game.Catalog
 			};
 		}
 
-		public ICatalogItem GetCatalogItemByOfferId(int offerId)
-		{
-			ICatalogItem catalogItem = null;
-
-			ICatalogPage catalogPage = _catalogPages.Values.Where(page => page.OfferIds.Contains(offerId)).FirstOrDefault();
-			if (catalogPage != null)
-			{
-				foreach (ICatalogItem item in catalogPage.Items.Values)
-				{
-					if (item.OfferId == offerId)
-						catalogItem = item;
-				}
-			}
-
-			return catalogItem;
-		}
+		public ICatalogItem GetCatalogItemByOfferId(int offerId) =>
+			_catalogItems.Values.Where(data => data.OfferId == offerId).FirstOrDefault();
 
 		public bool TryGetCatalogItem(int itemId, string mode, out ICatalogItem item)
 		{

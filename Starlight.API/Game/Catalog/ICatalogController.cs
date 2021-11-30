@@ -44,6 +44,11 @@ namespace Starlight.API.Game.Catalog
 		/// <returns>True of false if the item was found</returns>
 		bool TryGetCatalogItem(int itemId, string mode, out ICatalogItem item);
 
+		/// <summary>
+		/// Gets the catalog item from the offer id
+		/// </summary>
+		/// <param name="offerId">The offer id to search</param>
+		/// <returns>The catalog item if exists</returns>
 		ICatalogItem GetCatalogItemByOfferId(int offerId);
 	}
 }
