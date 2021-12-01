@@ -34,5 +34,8 @@ namespace Starlight.Game.Items
 
 		public bool TryGetItemDataById(uint itemId, out IItemData itemData) =>
 			_itemDatas.TryGetValue(itemId, out itemData);
+
+		public async Task<IList<IItem>> GetItemsForPlayer(uint playerId) =>
+			await _itemDao.GetItemsForPlayer(playerId, _itemDatas);
 	}
 }

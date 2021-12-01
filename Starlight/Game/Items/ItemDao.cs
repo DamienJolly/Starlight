@@ -30,5 +30,26 @@ namespace Starlight.Game.Items
 
 			return itemDatas.ToDictionary(row => row.Id, row => row);
 		}
+
+		internal async Task<IList<IItem>> GetItemsForPlayer(uint playerId, IDictionary<uint, IItemData> itemDatas)
+		{
+			IList<IItem> playerItems = new List<IItem>();
+			using var connection = dbProvider.GetSqlConnection();
+
+			var queryResult = await connection.QueryAsync<Item>(
+				"SELECT `items`.*, IFNULL(`players`.`username`, '') AS `player_username` FROM `items` LEFT JOIN `players` ON `players`.`id` = `items`.`player_id` WHERE `items`.`player_id` = @playerId AND `items`.`room_id` = '0' ORDER BY `id` DESC",
+				new { playerId });
+
+			foreach (IItem item in queryResult)
+			{
+				if (!itemDatas.TryGetValue(item.ItemId, out IItemData itemData))
+					continue;
+
+				item.ItemData = itemData;
+				playerItems.Add(item);
+			}
+
+			return playerItems;
+		}
 	}
 }

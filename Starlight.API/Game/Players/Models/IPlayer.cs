@@ -24,5 +24,6 @@ namespace Starlight.API.Game.Players.Models
         /// The messenger component associated with the player.
         /// </summary>
         IMessengerComponent MessengerComponent { get; set; }
-    }
+		IInventoryComponent InventoryComponent { get; set; }
+	}
 }

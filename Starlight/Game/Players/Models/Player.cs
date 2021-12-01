@@ -5,25 +5,27 @@ using Starlight.Game.Players.Components;
 
 namespace Starlight.Game.Players.Models
 {
-    internal class Player : IPlayer
-    {
-        public IPlayerData PlayerData { get; }
-        public ISession Session { get; }
+	internal class Player : IPlayer
+	{
+		public IPlayerData PlayerData { get; }
+		public ISession Session { get; }
 
-        public IPlayerSettings PlayerSettings { get; set; }
-        public IMessengerComponent MessengerComponent { get; set; }
+		public IPlayerSettings PlayerSettings { get; set; }
+		public IMessengerComponent MessengerComponent { get; set; }
+		public IInventoryComponent InventoryComponent { get; set; }
 
-        internal Player(IPlayerData data, ISession session)
-        {
-            PlayerData = data;
-            Session = session;
+		internal Player(IPlayerData data, ISession session)
+		{
+			PlayerData = data;
+			Session = session;
 
-            InitializeComponents();
-        }
+			InitializeComponents();
+		}
 
-        private void InitializeComponents()
-        {
-            MessengerComponent = new MessengerComponent(this);
-        }
-    }
+		private void InitializeComponents()
+		{
+			MessengerComponent = new MessengerComponent(this);
+			InventoryComponent = new InventoryComponent(this);
+		}
+	}
 }
