@@ -1,5 +1,4 @@
-﻿using Dapper;
-using Starlight.API.Database;
+﻿using Starlight.API.Database;
 using Starlight.API.Game.Items.Models;
 using Starlight.Game.Items.Models;
 using System.Collections.Generic;
@@ -17,30 +16,21 @@ namespace Starlight.Game.Items
 			dbProvider = _dbProvider;
 		}
 
-		internal async Task<IDictionary<uint, IItemData>> GetItemData()
-		{
-			using var connection = dbProvider.GetSqlConnection();
-
-			IList<IItemData> itemDatas = new List<IItemData>(await connection.QueryAsync<ItemData>(
-				"SELECT * FROM `item_data`"));
-
-			foreach (IItemData itemData in itemDatas)
-			{
-			}
-
-			return itemDatas.ToDictionary(row => row.Id, row => row);
-		}
+		internal async Task<IDictionary<uint, IItemData>> GetItemData() =>
+			(await dbProvider.Query<ItemData>(
+				"SELECT * FROM `item_data`"))
+			.ToList<IItemData>()
+			.ToDictionary(row => row.Id, row => row);
 
 		internal async Task<IList<IItem>> GetItemsForPlayer(uint playerId, IDictionary<uint, IItemData> itemDatas)
 		{
 			IList<IItem> playerItems = new List<IItem>();
-			using var connection = dbProvider.GetSqlConnection();
 
-			var queryResult = await connection.QueryAsync<Item>(
+			var results = (await dbProvider.Query<Item>(
 				"SELECT `items`.*, IFNULL(`players`.`username`, '') AS `player_username` FROM `items` LEFT JOIN `players` ON `players`.`id` = `items`.`player_id` WHERE `items`.`player_id` = @playerId AND `items`.`room_id` = '0' ORDER BY `id` DESC",
-				new { playerId });
+				new { playerId })).ToList() as IList<IItem>;
 
-			foreach (IItem item in queryResult)
+			foreach (IItem item in results)
 			{
 				if (!itemDatas.TryGetValue(item.ItemId, out IItemData itemData))
 					continue;

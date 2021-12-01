@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using Starlight.API.Config;
 using Starlight.API.Database;
 using Starlight.Config.Configs;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Starlight.Database
@@ -27,6 +28,8 @@ namespace Starlight.Database
 			_connectionString = stringBuilder.ToString();
 		}
 
+		public MySqlConnection GetSqlConnection() => new(_connectionString);
+
 		public async ValueTask<bool> TestConnection()
 		{
 			try
@@ -43,6 +46,22 @@ namespace Starlight.Database
 			return true;
 		}
 
-		public MySqlConnection GetSqlConnection() => new(_connectionString);
+		public async Task<IEnumerable<T>> Query<T>(string query, object param = null)
+		{
+			using var connection = GetSqlConnection();
+			return await connection.QueryAsync<T>(query, param);
+		}
+
+		public async Task<T> QueryFirst<T>(string query, object param = null)
+		{
+			using var connection = GetSqlConnection();
+			return await connection.QueryFirstOrDefaultAsync<T>(query, param);
+		}
+
+		public async Task Execute(string query, object param = null)
+		{
+			using var connection = GetSqlConnection();
+			await connection.ExecuteAsync(query, param);
+		}
 	}
 }

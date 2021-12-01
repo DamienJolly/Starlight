@@ -1,5 +1,4 @@
-﻿using Dapper;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Starlight.API.Database;
 using Starlight.API.Game.Catalog.Models;
 using Starlight.API.Game.Items;
@@ -27,10 +26,9 @@ namespace Starlight.Game.Catalog
 
 		internal async Task<IDictionary<int, ICatalogPage>> GetCatalogPages()
 		{
-			using var connection = dbProvider.GetSqlConnection();
-
-			IList<ICatalogPage> catalogPages = new List<ICatalogPage>(await connection.QueryAsync<CatalogPage>(
-				"SELECT * FROM `catalog_pages` ORDER BY `order_num` ASC, `caption` ASC"));
+			var catalogPages = (await dbProvider.Query<CatalogPage>(
+				"SELECT * FROM `catalog_pages` ORDER BY `order_num` ASC, `caption` ASC"))
+				.ToList<ICatalogPage>();
 
 			foreach (ICatalogPage catalogPage in catalogPages)
 			{
@@ -44,10 +42,9 @@ namespace Starlight.Game.Catalog
 
 		internal async Task<IDictionary<int, ICatalogPage>> GetCatalogBCPages()
 		{
-			using var connection = dbProvider.GetSqlConnection();
-
-			IList<ICatalogPage> catalogPages = new List<ICatalogPage>(await connection.QueryAsync<CatalogPage>(
-				"SELECT * FROM `catalog_bc_pages` ORDER BY `order_num` ASC, `caption` ASC"));
+			var catalogPages = (await dbProvider.Query<CatalogPage>(
+				"SELECT * FROM `catalog_bc_pages` ORDER BY `order_num` ASC, `caption` ASC"))
+				.ToList<ICatalogPage>();
 
 			foreach (ICatalogPage catalogPage in catalogPages)
 			{
@@ -59,22 +56,17 @@ namespace Starlight.Game.Catalog
 			return catalogPages.ToDictionary(row => row.Id, row => row);
 		}
 
-		internal async Task<IDictionary<int, ICatalogFeaturedPage>> GetCatalogFeaturedPages()
-		{
-			using var connection = dbProvider.GetSqlConnection();
-
-			IList<ICatalogFeaturedPage> featured = new List<ICatalogFeaturedPage>(await connection.QueryAsync<CatalogFeaturedPage>(
-				"SELECT * FROM `catalog_featured_pages`"));
-
-			return featured.ToDictionary(row => row.SlotId, row => row);
-		}
+		internal async Task<IDictionary<int, ICatalogFeaturedPage>> GetCatalogFeaturedPages() =>
+			(await dbProvider.Query<CatalogFeaturedPage>(
+				"SELECT * FROM `catalog_featured_pages`"))
+			.ToList<ICatalogFeaturedPage>()
+			.ToDictionary(row => row.SlotId, row => row);
 
 		internal async Task<IDictionary<int, ICatalogItem>> GetCatalogItems(IDictionary<int, ICatalogPage> catalogPages)
 		{
-			using var connection = dbProvider.GetSqlConnection();
-
-			IList<ICatalogItem> catalogItems = new List<ICatalogItem>(await connection.QueryAsync<CatalogItem>(
-				"SELECT * FROM `catalog_items` ORDER BY `id` ASC"));
+			var catalogItems = (await dbProvider.Query<CatalogItem>(
+				"SELECT * FROM `catalog_items` ORDER BY `id` ASC"))
+				.ToList<ICatalogItem>();
 
 			foreach (ICatalogItem catalogItem in catalogItems)
 			{
@@ -97,10 +89,9 @@ namespace Starlight.Game.Catalog
 
 		internal async Task<IDictionary<int, ICatalogItem>> GetCatalogBCItems(IDictionary<int, ICatalogPage> catalogPages)
 		{
-			using var connection = dbProvider.GetSqlConnection();
-
-			IList<ICatalogItem> catalogItems = new List<ICatalogItem>(await connection.QueryAsync<CatalogItem>(
-				"SELECT * FROM `catalog_bc_items` ORDER BY `id` ASC"));
+			var catalogItems = (await dbProvider.Query<CatalogItem>(
+				"SELECT * FROM `catalog_bc_items` ORDER BY `id` ASC"))
+				.ToList<ICatalogItem>();
 
 			foreach (ICatalogItem catalogItem in catalogItems)
 			{
